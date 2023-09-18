@@ -32,9 +32,9 @@ model Character {
   id                    Int                   @id @default(autoincrement())
   name                  String
   species               String
-  sensitivityToTheForce SensitivityToTheForce
+  sensitivityToTheForce SensitivityToTheForce @default(High)
   currentLocationId     Int                   @map("current_location_id")
-  currentLocation       Planet                @relation(fields: [currentLocationId], references: [id])
+  currentLocation       Planet?               @relation(fields: [currentLocationId], references: [id])
   starships             Starship[]
 }
 

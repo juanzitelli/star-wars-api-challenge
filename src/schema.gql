@@ -1,0 +1,59 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Character {
+  currentLocationId: Float!
+  id: Float!
+  name: String!
+  sensitivityToTheForce: String!
+  species: String!
+}
+
+input CreateCharacterInput {
+  currentLocationId: Float!
+  id: Float!
+  name: String!
+  sensitivityToTheForce: String!
+  species: String!
+}
+
+input CreatePlanetInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Mutation {
+  createCharacter(createCharacterInput: CreateCharacterInput!): Character!
+  createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
+  removeCharacter(id: Int!): Character!
+  removePlanet(id: Int!): Planet!
+  updateCharacter(updateCharacterInput: UpdateCharacterInput!): Character!
+  updatePlanet(updatePlanetInput: UpdatePlanetInput!): Planet!
+}
+
+type Planet {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Query {
+  character(id: Int!): Character!
+  characters: [Character!]!
+  planet(id: Int!): Planet!
+  planets: [Planet!]!
+}
+
+input UpdateCharacterInput {
+  currentLocationId: Float!
+  id: Float!
+  name: String!
+  sensitivityToTheForce: String!
+  species: String!
+}
+
+input UpdatePlanetInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
