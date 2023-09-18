@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Planet {
+  id         Int         @id @default(autoincrement())
+  name       String
+  population Int
+  climate    String
+  terrain    String
+  latitude   Float
+  longitude  Float
+  characters Character[]
+  starships  Starship[]
+}
+
+enum SensitivityToTheForce {
+  High
+  Medium
+  Low
+}
+
+model Character {
+  id                    Int                   @id @default(autoincrement())
+  name                  String
+  species               String
+  sensitivityToTheForce SensitivityToTheForce
+  currentLocationId     Int                   @map("current_location_id")
+  currentLocation       Planet                @relation(fields: [currentLocationId], references: [id])
+  starships             Starship[]
+}
+
+model Starship {
+  id              Int         @id @default(autoincrement())
+  name            String
+  model           String
+  cargoCapacity   Int
+  latitude        Float
+  longitude       Float
+  currentPlanetId Int         @map("current_planet_id")
+  currentPlanet   Planet      @relation(fields: [currentPlanetId], references: [id])
+  passengers      Character[]
+  enemies         Starship[]  @relation("enemies")
+  Starship        Starship?   @relation("enemies", fields: [starshipId], references: [id])
+  starshipId      Int?
+}
