@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePlanetInput } from './dto/create-planet.input';
-import { UpdatePlanetInput } from './dto/update-planet.input';
+import { Injectable } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
+import { PrismaService } from "./../db/prisma.service";
 
 @Injectable()
 export class PlanetsService {
-  create(createPlanetInput: CreatePlanetInput) {
-    return 'This action adds a new planet';
+  constructor(private prisma: PrismaService) {}
+
+  async create(params: { data: Prisma.PlanetCreateInput }) {
+    return await this.prisma.planet.create(params);
   }
 
-  findAll() {
-    return `This action returns all planets`;
+  async findAll() {
+    return await this.prisma.planet.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} planet`;
+  async findOne(params: { where: Prisma.PlanetWhereUniqueInput }) {
+    return await this.prisma.planet.findUnique(params);
   }
 
-  update(id: number, updatePlanetInput: UpdatePlanetInput) {
-    return `This action updates a #${id} planet`;
+  async update(params: {
+    data: Prisma.PlanetUpdateInput;
+    where: Prisma.PlanetWhereUniqueInput;
+  }) {
+    return await this.prisma.planet.update(params);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} planet`;
+  async remove(params: { where: Prisma.PlanetWhereUniqueInput }) {
+    return await this.prisma.planet.delete(params);
   }
 }

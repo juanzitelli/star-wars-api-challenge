@@ -1,7 +1,8 @@
-import { Field, Float, InputType, Int } from "@nestjs/graphql";
+import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Planet as PlanetSchema } from "@prisma/client";
-@InputType()
-export class CreatePlanetInput {
+
+@ObjectType()
+export class Planet {
   @Field(() => String)
   id: PlanetSchema["id"];
 
@@ -23,3 +24,17 @@ export class CreatePlanetInput {
   @Field(() => Float)
   longitude: PlanetSchema["longitude"];
 }
+
+/**
+ * model Planet {
+  id         Int         @id @default(autoincrement())
+  name       String
+  population Int
+  climate    String
+  terrain    String
+  latitude   Float
+  longitude  Float
+  characters Character[]
+  starships  Starship[]
+}
+ */
