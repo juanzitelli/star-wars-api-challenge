@@ -42,7 +42,7 @@ $ pnpm run test:cov
 
 - [ ] Standard CRUD operations for Planet, Character, and Starship.
   - [x] Characters
-  - [ ] Planet
+  - [x] Planet
   - [ ] Starship
 - [ ] Functionality to relocate a character from one planet to another.
 - [ ] Boarding or disembarking a character from a starship.
