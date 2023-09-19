@@ -12,7 +12,6 @@ type Character {
 
 input CreateCharacterInput {
   currentLocationId: Float!
-  id: Float!
   name: String!
   sensitivityToTheForce: String!
   species: String!
@@ -20,7 +19,6 @@ input CreateCharacterInput {
 
 input CreatePlanetInput {
   climate: String!
-  id: String!
   latitude: Float!
   longitude: Float!
   name: String!
@@ -28,13 +26,26 @@ input CreatePlanetInput {
   terrain: String!
 }
 
+input CreateStarshipInput {
+  cargoCapacity: Int!
+  currentPlanetId: Int!
+  latitude: Float!
+  longitude: Float!
+  model: String!
+  name: String!
+  starshipId: Int!
+}
+
 type Mutation {
   createCharacter(createCharacterInput: CreateCharacterInput!): Character!
   createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
+  createStarship(createStarshipInput: CreateStarshipInput!): Starship!
   removeCharacter(id: Int!): Character!
   removePlanet(id: Int!): Planet!
+  removeStarship(id: Int!): Starship!
   updateCharacter(updateCharacterInput: UpdateCharacterInput!): Character!
   updatePlanet(updatePlanetInput: UpdatePlanetInput!): Planet!
+  updateStarship(updateStarshipInput: UpdateStarshipInput!): Starship!
 }
 
 type Planet {
@@ -52,6 +63,13 @@ type Query {
   characters: [Character!]!
   planet(id: Int!): Planet!
   planets: [Planet!]!
+  starship(id: Int!): Starship!
+  starships: [Starship!]!
+}
+
+type Starship {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 input UpdateCharacterInput {
@@ -70,4 +88,15 @@ input UpdatePlanetInput {
   name: String
   population: Int
   terrain: String
+}
+
+input UpdateStarshipInput {
+  cargoCapacity: Int
+  currentPlanetId: Int
+  id: Int!
+  latitude: Float
+  longitude: Float
+  model: String
+  name: String
+  starshipId: Int
 }

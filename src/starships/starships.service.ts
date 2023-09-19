@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import { CreateStarshipInput } from './dto/create-starship.input';
-import { UpdateStarshipInput } from './dto/update-starship.input';
+import { Injectable } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
+import { PrismaService } from "./../db/prisma.service";
 
 @Injectable()
 export class StarshipsService {
-  create(createStarshipInput: CreateStarshipInput) {
-    return 'This action adds a new starship';
+  constructor(private prisma: PrismaService) {}
+
+  async create(params: { data: Prisma.StarshipCreateInput }) {
+    return await this.prisma.starship.create(params);
   }
 
-  findAll() {
-    return `This action returns all starships`;
+  async findAll() {
+    return await this.prisma.starship.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} starship`;
+  async findOne(params: { where: Prisma.StarshipWhereUniqueInput }) {
+    return await this.prisma.starship.findUnique(params);
   }
 
-  update(id: number, updateStarshipInput: UpdateStarshipInput) {
-    return `This action updates a #${id} starship`;
+  async update(params: {
+    data: Prisma.StarshipUpdateInput;
+    where: Prisma.StarshipWhereUniqueInput;
+  }) {
+    return await this.prisma.starship.update(params);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} starship`;
+  async remove(params: { where: Prisma.StarshipWhereUniqueInput }) {
+    return await this.prisma.starship.delete(params);
   }
 }

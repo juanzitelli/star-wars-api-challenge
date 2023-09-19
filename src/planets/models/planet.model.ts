@@ -24,17 +24,3 @@ export class Planet {
   @Field(() => Float)
   longitude: PlanetSchema["longitude"];
 }
-
-/**
- * model Planet {
-  id         Int         @id @default(autoincrement())
-  name       String
-  population Int
-  climate    String
-  terrain    String
-  latitude   Float
-  longitude  Float
-  characters Character[]
-  starships  Starship[]
-}
- */

@@ -3,9 +3,6 @@ import { Planet as PlanetSchema } from "@prisma/client";
 @InputType()
 export class CreatePlanetInput {
   @Field(() => String)
-  id: PlanetSchema["id"];
-
-  @Field(() => String)
   name: PlanetSchema["name"];
 
   @Field(() => Int)

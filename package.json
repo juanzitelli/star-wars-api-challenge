@@ -26,7 +26,8 @@
     "prisma:push": "prisma db push",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "prisma db seed",
+    "prisma:full-update": "pnpm prisma:generate && pnpm prisma:migrate:dev && pnpm prisma:push"
   },
   "dependencies": {
     "@apollo/server": "^4.9.3",

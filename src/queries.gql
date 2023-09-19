@@ -1,0 +1,61 @@
+query findOneCharacter {
+  character(id: 1) {
+    id
+    name
+    sensitivityToTheForce
+    species
+    currentLocationId
+  }
+}
+
+query findAllCharacters {
+  characters {
+    id
+    name
+    sensitivityToTheForce
+    species
+    currentLocationId
+  }
+}
+
+mutation createCharacter {
+  createCharacter(
+    createCharacterInput: {
+      id: 1
+      name: "Anakin Skywalker"
+      sensitivityToTheForce: "High"
+      species: "Human"
+      currentLocationId: 100
+    }
+  ) {
+    id
+    name
+    sensitivityToTheForce
+    species
+    currentLocationId
+  }
+}
+
+mutation updateCharacter {
+  updateCharacter(
+    updateCharacterInput: {
+      id: 1
+      name: "Darth Vader"
+      sensitivityToTheForce: "High"
+      species: "Human"
+      currentLocationId: 101
+    }
+  ) {
+    id
+    name
+    sensitivityToTheForce
+    species
+    currentLocationId
+  }
+}
+
+mutation {
+  removeCharacter(id: 1) {
+    id
+  }
+}

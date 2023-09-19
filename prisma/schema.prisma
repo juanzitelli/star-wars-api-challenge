@@ -46,7 +46,7 @@ model Starship {
   latitude        Float
   longitude       Float
   currentPlanetId Int         @map("current_planet_id")
-  currentPlanet   Planet      @relation(fields: [currentPlanetId], references: [id])
+  currentPlanet   Planet?     @relation(fields: [currentPlanetId], references: [id])
   passengers      Character[]
   enemies         Starship[]  @relation("enemies")
   Starship        Starship?   @relation("enemies", fields: [starshipId], references: [id])

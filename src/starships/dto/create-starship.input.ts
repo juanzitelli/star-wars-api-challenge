@@ -1,7 +1,26 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, Float, InputType, Int } from "@nestjs/graphql";
+import { Starship as StarshipSchema } from "@prisma/client";
 
 @InputType()
 export class CreateStarshipInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => String)
+  name: StarshipSchema["name"];
+
+  @Field(() => String)
+  model: StarshipSchema["model"];
+
+  @Field(() => Int)
+  cargoCapacity: StarshipSchema["cargoCapacity"];
+
+  @Field(() => Float)
+  latitude: StarshipSchema["latitude"];
+
+  @Field(() => Float)
+  longitude: StarshipSchema["longitude"];
+
+  @Field(() => Int)
+  currentPlanetId: StarshipSchema["currentPlanetId"];
+
+  @Field(() => Int)
+  starshipId: StarshipSchema["starshipId"];
 }

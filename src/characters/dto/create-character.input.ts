@@ -4,10 +4,6 @@ import { IsNotEmpty } from "class-validator";
 
 @InputType()
 export class CreateCharacterInput {
-  @Field(() => Number)
-  @IsNotEmpty()
-  id: CharacterSchema["id"];
-
   @Field(() => String)
   @IsNotEmpty()
   name: CharacterSchema["name"];

@@ -1,19 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { StarshipsResolver } from './starships.resolver';
-import { StarshipsService } from './starships.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { PrismaService } from "./../db/prisma.service";
+import { StarshipsResolver } from "./starships.resolver";
+import { StarshipsService } from "./starships.service";
 
-describe('StarshipsResolver', () => {
+describe("StarshipsResolver", () => {
   let resolver: StarshipsResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [StarshipsResolver, StarshipsService],
+      providers: [StarshipsResolver, StarshipsService, PrismaService],
     }).compile();
 
     resolver = module.get<StarshipsResolver>(StarshipsResolver);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(resolver).toBeDefined();
   });
 });
