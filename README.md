@@ -41,11 +41,11 @@ $ pnpm run test:cov
 
 # Functionality (a checked item equals to a finished feature)
 
-- [ ] Standard CRUD operations for Planet, Character, and Starship.
+- [x] Standard CRUD operations for Planet, Character, and Starship.
   - [x] Characters
   - [x] Planet
-  - [ ] Starship
-- [ ] Functionality to relocate a character from one planet to another.
+  - [x] Starship
+- [x] Functionality to relocate a character from one planet to another.
 - [ ] Boarding or disembarking a character from a starship.
 - [ ] Traveling capability for a starship from its current location to a destination planet.
 - [ ] Calculate the distance of a starship from a specified planet using a GPS-like algorithm.
