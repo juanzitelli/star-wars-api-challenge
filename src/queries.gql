@@ -1,61 +1,189 @@
-query findOneCharacter {
+mutation RelocateCharacter {
+  relocateCharacter(relocateCharacterArgs: { id: 2, planetId: 1 }) {
+    id
+    currentLocationId
+  }
+}
+
+query GetCharacterById {
   character(id: 1) {
     id
     name
+    currentLocationId
     sensitivityToTheForce
     species
-    currentLocationId
   }
 }
 
-query findAllCharacters {
+query GetAllCharacters {
   characters {
     id
     name
+    currentLocationId
     sensitivityToTheForce
     species
-    currentLocationId
+    starships {
+      id
+      name
+    }
   }
 }
 
-mutation createCharacter {
+query GetPlanetById {
+  planet(id: 1) {
+    id
+    name
+    climate
+    latitude
+    longitude
+    population
+    terrain
+  }
+}
+
+query GetAllPlanets {
+  planets {
+    id
+    name
+    climate
+    latitude
+    longitude
+    population
+    terrain
+  }
+}
+
+query GetStarshipById {
+  starship(id: 1) {
+    id
+    name
+    model
+    cargoCapacity
+    currentPlanetId
+    latitude
+    longitude
+    starshipId
+  }
+}
+
+query GetAllStarships {
+  starships {
+    id
+    name
+    model
+    cargoCapacity
+    currentPlanetId
+    latitude
+    longitude
+    starshipId
+  }
+}
+
+mutation CreateCharacter {
   createCharacter(
     createCharacterInput: {
-      id: 1
-      name: "Anakin Skywalker"
+      currentLocationId: 1.0
+      name: "John Doe"
       sensitivityToTheForce: "High"
       species: "Human"
-      currentLocationId: 100
     }
   ) {
     id
-    name
-    sensitivityToTheForce
-    species
-    currentLocationId
   }
 }
 
-mutation updateCharacter {
+mutation CreatePlanet {
+  createPlanet(
+    createPlanetInput: {
+      climate: "Temperate"
+      latitude: 22.0
+      longitude: 23.0
+      name: "Earth"
+      population: 1000000000
+      terrain: "Varied"
+    }
+  ) {
+    id
+  }
+}
+
+mutation CreateStarship {
+  createStarship(
+    createStarshipInput: {
+      cargoCapacity: 1000
+      currentPlanetId: 1
+      latitude: 22.0
+      longitude: 23.0
+      model: "A-Wing"
+      name: "Star Destroyer"
+      starshipId: 1
+    }
+  ) {
+    id
+  }
+}
+
+mutation RemoveCharacter {
+  removeCharacter(id: 1) {
+    id
+  }
+}
+
+mutation RemovePlanet {
+  removePlanet(id: 1) {
+    id
+  }
+}
+
+mutation RemoveStarship {
+  removeStarship(id: 1) {
+    name
+  }
+}
+
+mutation UpdateCharacter {
   updateCharacter(
     updateCharacterInput: {
-      id: 1
-      name: "Darth Vader"
-      sensitivityToTheForce: "High"
-      species: "Human"
-      currentLocationId: 101
+      currentLocationId: 1.0
+      id: 1.0
+      name: "Jane Doe"
+      sensitivityToTheForce: "Moderate"
+      species: "Alien"
     }
   ) {
     id
-    name
-    sensitivityToTheForce
-    species
-    currentLocationId
   }
 }
 
-mutation {
-  removeCharacter(id: 1) {
+mutation UpdatePlanet {
+  updatePlanet(
+    updatePlanetInput: {
+      climate: "Cold"
+      id: 1
+      latitude: 33.0
+      longitude: 44.0
+      name: "Mars"
+      population: 1000
+      terrain: "Rocky"
+    }
+  ) {
+    id
+  }
+}
+
+mutation UpdateStarship {
+  updateStarship(
+    updateStarshipInput: {
+      cargoCapacity: 2000
+      currentPlanetId: 2
+      id: 1
+      latitude: 33.0
+      longitude: 44.0
+      model: "B-Wing"
+      name: "Death Star"
+      starshipId: 2
+    }
+  ) {
     id
   }
 }

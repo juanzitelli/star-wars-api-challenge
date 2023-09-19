@@ -22,7 +22,11 @@ export class CharactersService {
   }
 
   async findAll(): Promise<Array<Character>> {
-    return this.prisma.character.findMany();
+    return this.prisma.character.findMany({
+      include: {
+        starships: true,
+      },
+    });
   }
 
   async findOne(params: {

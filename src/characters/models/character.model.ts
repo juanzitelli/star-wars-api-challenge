@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { Character as CharacterSchema } from "@prisma/client";
+import { Starship } from "./../../starships/models/starship.model";
 
 @ObjectType()
 export class Character {
@@ -17,4 +18,7 @@ export class Character {
 
   @Field(() => Number)
   currentLocationId: CharacterSchema["currentLocationId"];
+
+  @Field(() => [Starship])
+  starships: Array<Starship>;
 }

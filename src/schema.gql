@@ -8,6 +8,7 @@ type Character {
   name: String!
   sensitivityToTheForce: String!
   species: String!
+  starships: [Starship!]!
 }
 
 input CreateCharacterInput {
