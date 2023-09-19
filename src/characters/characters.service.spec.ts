@@ -113,4 +113,19 @@ describe("CharactersService", () => {
       name: "Removed Test Character",
     });
   });
+
+  it("should relocate a character", async () => {
+    const params: {
+      planetId: number;
+      where: Prisma.CharacterWhereUniqueInput;
+    } = { where: { id: 1 }, planetId: 1 };
+
+    prismaService.character.update = jest.fn().mockResolvedValue({
+      id: params.where.id,
+    });
+
+    expect(await service.relocateCharacter(params)).toEqual({
+      id: params.where.id,
+    });
+  });
 });

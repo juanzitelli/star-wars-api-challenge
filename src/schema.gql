@@ -40,6 +40,7 @@ type Mutation {
   createCharacter(createCharacterInput: CreateCharacterInput!): Character!
   createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
   createStarship(createStarshipInput: CreateStarshipInput!): Starship!
+  relocateCharacter(relocateCharacterArgs: RelocateCharacterArgs!): Character!
   removeCharacter(id: Int!): Character!
   removePlanet(id: Int!): Planet!
   removeStarship(id: Int!): Starship!
@@ -65,6 +66,11 @@ type Query {
   planets: [Planet!]!
   starship(id: Int!): Starship!
   starships: [Starship!]!
+}
+
+input RelocateCharacterArgs {
+  id: Int!
+  planetId: Int!
 }
 
 type Starship {

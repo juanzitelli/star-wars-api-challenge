@@ -38,4 +38,15 @@ export class CharactersService {
     const { where } = params;
     return this.prisma.character.delete({ where });
   }
+
+  async relocateCharacter(params: {
+    planetId: number;
+    where: Prisma.CharacterWhereUniqueInput;
+  }): Promise<Character> {
+    const { planetId, where } = params;
+    return this.prisma.character.update({
+      data: { currentLocationId: planetId },
+      where,
+    });
+  }
 }
