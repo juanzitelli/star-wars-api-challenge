@@ -68,8 +68,14 @@ type Query {
 }
 
 type Starship {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  cargoCapacity: Int!
+  currentPlanetId: Int!
+  id: Int!
+  latitude: Float!
+  longitude: Float!
+  model: String!
+  name: String!
+  starshipId: Int!
 }
 
 input UpdateCharacterInput {

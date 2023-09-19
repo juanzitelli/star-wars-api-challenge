@@ -11,6 +11,73 @@ function randomLongitude() {
 }
 
 async function main() {
+  const venus = await prisma.planet.create({
+    data: {
+      name: "Venus",
+      population: 0,
+      climate: "Hot",
+      terrain: "Rocky",
+      latitude: randomLatitude(),
+      longitude: randomLongitude(),
+    },
+  });
+
+  const jupiter = await prisma.planet.create({
+    data: {
+      name: "Jupiter",
+      population: 0,
+      climate: "Gas Giant",
+      terrain: "Gas",
+      latitude: randomLatitude(),
+      longitude: randomLongitude(),
+    },
+  });
+
+  const xWing = await prisma.starship.create({
+    data: {
+      name: "X-Wing",
+      model: "T-65B",
+      cargoCapacity: 110,
+      latitude: randomLatitude(),
+      longitude: randomLongitude(),
+      currentPlanetId: venus.id,
+    },
+  });
+
+  const yWing = await prisma.starship.create({
+    data: {
+      name: "Y-Wing",
+      model: "BTL-B Y-wing starfighter",
+      cargoCapacity: 110,
+      latitude: randomLatitude(),
+      longitude: randomLongitude(),
+      currentPlanetId: jupiter.id,
+    },
+  });
+
+  await prisma.character.create({
+    data: {
+      name: "Leia Organa",
+      species: "Human",
+      sensitivityToTheForce: SensitivityToTheForce.High,
+      currentLocationId: venus.id,
+      starships: {
+        connect: { id: xWing.id },
+      },
+    },
+  });
+
+  await prisma.character.create({
+    data: {
+      name: "Han Solo",
+      species: "Human",
+      sensitivityToTheForce: SensitivityToTheForce.Low,
+      currentLocationId: jupiter.id,
+      starships: {
+        connect: { id: yWing.id },
+      },
+    },
+  });
   const earth = await prisma.planet.create({
     data: {
       name: "Earth",
