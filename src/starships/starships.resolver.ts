@@ -27,11 +27,12 @@ export class StarshipsResolver {
 
   @Mutation(() => Starship)
   updateStarship(
-    @Args("updateStarshipInput") updateStarshipInput: UpdateStarshipInput,
+    @Args("updateStarshipInput")
+    { id, ...updateStarshipInput }: UpdateStarshipInput,
   ) {
     return this.starshipsService.update({
-      where: { id: updateStarshipInput.id },
       data: updateStarshipInput,
+      where: { id },
     });
   }
 

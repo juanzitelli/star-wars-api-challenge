@@ -29,8 +29,7 @@ export class CharactersResolver {
   @Mutation(() => Character)
   updateCharacter(
     @Args("updateCharacterInput")
-    updateCharacterInput: UpdateCharacterInput,
-    id: number,
+    { id, ...updateCharacterInput }: UpdateCharacterInput,
   ) {
     return this.charactersService.update({
       data: updateCharacterInput,

@@ -78,8 +78,6 @@ async function main() {
       },
     },
   });
-
-  // more seed data...
 }
 
 main()

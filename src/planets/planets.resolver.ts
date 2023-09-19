@@ -27,11 +27,11 @@ export class PlanetsResolver {
 
   @Mutation(() => Planet)
   updatePlanet(
-    @Args("updatePlanetInput") updatePlanetInput: UpdatePlanetInput,
+    @Args("updatePlanetInput") { id, ...updatePlanetInput }: UpdatePlanetInput,
   ) {
     return this.planetsService.update({
       data: updatePlanetInput,
-      where: { id: updatePlanetInput.id },
+      where: { id },
     });
   }
 
