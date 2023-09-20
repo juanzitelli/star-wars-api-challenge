@@ -1,4 +1,5 @@
 <p align="center">
+  🌑
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
   🚀
 </p>
@@ -39,7 +40,9 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-# Functionality (a checked item equals to a finished feature)
+# Functionality
+
+> 📔 A checked item equals to a finished feature
 
 - [x] Standard CRUD operations for Planet, Character, and Starship.
   - [x] Characters
