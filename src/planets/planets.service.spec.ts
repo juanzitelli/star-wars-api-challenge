@@ -15,6 +15,9 @@ describe("PlanetsService", () => {
       findUnique: jest.fn(),
       remove: jest.fn(),
     },
+    starship: {
+      findUnique: jest.fn(),
+    },
   };
 
   beforeEach(async () => {
@@ -110,5 +113,24 @@ describe("PlanetsService", () => {
       id: params.where.id,
       name: "Removed Test Planet",
     });
+  });
+
+  it("calculateDistanceToStarship returns the correct distance between a planet and a starship", async () => {
+    prismaService.planet.findUnique = jest.fn().mockResolvedValue({
+      latitude: 40.7128,
+      longitude: 74.006,
+    });
+
+    prismaService.starship.findUnique = jest.fn().mockResolvedValue({
+      latitude: 37.7749,
+      longitude: 122.4194,
+    });
+
+    const { distance } = await service.calculateDistanceToStarship({
+      planetId: 1,
+      starshipId: 1,
+    });
+
+    expect(distance).toBeCloseTo(4129086.1650573094);
   });
 });

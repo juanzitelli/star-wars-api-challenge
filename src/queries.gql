@@ -1,3 +1,25 @@
+query CalculateDistanceToStarship {
+  calculateDistanceToStarship(
+    calculateDistanceToStarshipInput: { starshipId: 4, planetId: 3 }
+  ) {
+    distance
+  }
+}
+
+mutation DisembarkCharacter {
+  disembarkCharacter(disembarkCharacterInput: { characterId: 4 }) {
+    id
+    name
+  }
+}
+
+mutation EmbarkCharacter {
+  embarkCharacter(embarkCharacterInput: { starshipId: 3, characterId: 4 }) {
+    id
+    name
+  }
+}
+
 mutation RelocateCharacter {
   relocateCharacter(relocateCharacterInput: { id: 2, planetId: 1 }) {
     id
@@ -6,12 +28,17 @@ mutation RelocateCharacter {
 }
 
 query GetCharacterById {
-  character(id: 1) {
+  character(id: 4) {
     id
     name
     currentLocationId
     sensitivityToTheForce
     species
+    starshipId
+    starship {
+      id
+      name
+    }
   }
 }
 
@@ -22,15 +49,15 @@ query GetAllCharacters {
     currentLocationId
     sensitivityToTheForce
     species
-    starships {
-      id
+    starship {
       name
+      id
     }
   }
 }
 
 query GetPlanetById {
-  planet(id: 1) {
+  planet(id: 3) {
     id
     name
     climate
@@ -38,6 +65,10 @@ query GetPlanetById {
     longitude
     population
     terrain
+    starships {
+      id
+      name
+    }
   }
 }
 
@@ -50,11 +81,15 @@ query GetAllPlanets {
     longitude
     population
     terrain
+    starships {
+      id
+      name
+    }
   }
 }
 
 query GetStarshipById {
-  starship(id: 1) {
+  starship(id: 4) {
     id
     name
     model
@@ -62,7 +97,6 @@ query GetStarshipById {
     currentPlanetId
     latitude
     longitude
-    starshipId
   }
 }
 
@@ -75,7 +109,6 @@ query GetAllStarships {
     currentPlanetId
     latitude
     longitude
-    starshipId
   }
 }
 
@@ -130,7 +163,7 @@ mutation RemoveCharacter {
 }
 
 mutation RemovePlanet {
-  removePlanet(id: 1) {
+  removePlanet(id: 7) {
     id
   }
 }
@@ -176,7 +209,7 @@ mutation UpdateStarship {
     updateStarshipInput: {
       cargoCapacity: 2000
       currentPlanetId: 2
-      id: 1
+      id: 2
       latitude: 33.0
       longitude: 44.0
       model: "B-Wing"

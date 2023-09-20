@@ -17,6 +17,9 @@ describe("CharactersService", () => {
       findUnique: jest.fn(),
       remove: jest.fn(),
     },
+    starship: {
+      findUnique: jest.fn(),
+    },
   };
 
   beforeEach(async () => {
@@ -141,9 +144,32 @@ describe("CharactersService", () => {
       id: params.characterId,
     });
 
+    prismaService.starship.findUnique = jest.fn().mockResolvedValue({
+      cargoCapacity: 10,
+      name: "ship",
+    });
+
     expect(await service.embark(params)).toEqual({
       id: params.characterId,
     });
+  });
+
+  it("should reject embarking a character to a starship because of cargo capacity", async () => {
+    const params: EmbarkCharacterInput = {
+      characterId: 1,
+      starshipId: 1,
+    };
+
+    prismaService.character.update = jest.fn().mockResolvedValue({
+      id: params.characterId,
+    });
+
+    prismaService.starship.findUnique = jest.fn().mockResolvedValue({
+      cargoCapacity: 0,
+      name: "ship",
+    });
+
+    await expect(async () => service.embark(params)).rejects.toThrowError();
   });
 
   it("should disembark a character to a starship", async () => {

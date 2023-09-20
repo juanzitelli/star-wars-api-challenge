@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CalculateDistanceToStarshipInput {
+  planetId: Int!
+  starshipId: Int!
+}
+
 type Character {
   currentLocationId: Float!
   id: Float!
@@ -42,6 +47,10 @@ input DisembarkCharacterInput {
   characterId: Int!
 }
 
+type Distance {
+  distance: Float!
+}
+
 input EmbarkCharacterInput {
   characterId: Int!
   starshipId: Int!
@@ -74,6 +83,7 @@ type Planet {
 }
 
 type Query {
+  calculateDistanceToStarship(calculateDistanceToStarshipInput: CalculateDistanceToStarshipInput!): Distance!
   character(id: Int!): Character!
   characters: [Character!]!
   planet(id: Int!): Planet!

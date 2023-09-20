@@ -62,19 +62,46 @@ export class CharactersService {
     characterId: number;
   }): Promise<Character> {
     const { starshipId, characterId } = params;
-    return this.prisma.character.update({
-      data: {
-        starship: {
-          connect: {
-            id: starshipId,
-          },
-        },
-      },
+
+    const starshipPassengers = await this.prisma.character.findMany({
       where: {
-        id: characterId,
+        starshipId: starshipId,
+      },
+      select: {
+        id: true,
       },
     });
+
+    const { cargoCapacity, name } = await this.prisma.starship.findUnique({
+      where: {
+        id: starshipId,
+      },
+      select: {
+        cargoCapacity: true,
+        name: true,
+      },
+    });
+
+    if (starshipPassengers.length < cargoCapacity) {
+      return this.prisma.character.update({
+        data: {
+          starship: {
+            connect: {
+              id: starshipId,
+            },
+          },
+        },
+        where: {
+          id: characterId,
+        },
+      });
+    }
+
+    throw new Error(
+      `Can't embark a new character to ${name} since it's cargo capacity of ${cargoCapacity} is complete`,
+    );
   }
+
   async disembark(params: { characterId: number }): Promise<Character> {
     const { characterId } = params;
     return this.prisma.character.update({
