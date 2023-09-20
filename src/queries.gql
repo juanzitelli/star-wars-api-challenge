@@ -1,5 +1,5 @@
 mutation RelocateCharacter {
-  relocateCharacter(relocateCharacterArgs: { id: 2, planetId: 1 }) {
+  relocateCharacter(relocateCharacterInput: { id: 2, planetId: 1 }) {
     id
     currentLocationId
   }

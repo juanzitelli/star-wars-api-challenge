@@ -23,7 +23,4 @@ export class Starship {
 
   @Field(() => Int)
   currentPlanetId: StarshipSchema["currentPlanetId"];
-
-  @Field(() => Int)
-  starshipId: StarshipSchema["starshipId"];
 }

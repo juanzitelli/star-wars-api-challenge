@@ -1,9 +1,11 @@
 import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CharactersService } from "./characters.service";
 import { CreateCharacterInput } from "./dto/create-character.input";
+import { EmbarkCharacterInput } from "./dto/embark-character.input";
+import { RelocateCharacterInput } from "./dto/relocate-character.input";
 import { UpdateCharacterInput } from "./dto/update-character.input";
 import { Character } from "./models/character.model";
-import { RelocateCharacterArgs } from "./args/relocate-character.args";
+import { DisembarkCharacterInput } from "./dto/disembark-character.input";
 
 @Resolver(() => Character)
 export class CharactersResolver {
@@ -42,13 +44,36 @@ export class CharactersResolver {
   removeCharacter(@Args("id", { type: () => Int }) id: number) {
     return this.charactersService.remove({ where: { id } });
   }
+
   @Mutation(() => Character)
   relocateCharacter(
-    @Args("relocateCharacterArgs") relocateCharacterArgs: RelocateCharacterArgs,
+    @Args("relocateCharacterInput")
+    relocateCharacterInput: RelocateCharacterInput,
   ) {
-    return this.charactersService.relocateCharacter({
-      planetId: relocateCharacterArgs.planetId,
-      where: { id: relocateCharacterArgs.id },
+    return this.charactersService.relocate({
+      planetId: relocateCharacterInput.planetId,
+      where: { id: relocateCharacterInput.id },
+    });
+  }
+
+  @Mutation(() => Character)
+  embarkCharacter(
+    @Args("embarkCharacterInput")
+    { characterId, starshipId }: EmbarkCharacterInput,
+  ) {
+    return this.charactersService.embark({
+      characterId,
+      starshipId,
+    });
+  }
+
+  @Mutation(() => Character)
+  disembarkCharacter(
+    @Args("disembarkCharacterInput")
+    { characterId }: DisembarkCharacterInput,
+  ) {
+    return this.charactersService.disembark({
+      characterId,
     });
   }
 }

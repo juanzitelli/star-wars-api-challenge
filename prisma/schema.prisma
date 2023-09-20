@@ -35,7 +35,8 @@ model Character {
   sensitivityToTheForce SensitivityToTheForce @default(High)
   currentLocationId     Int                   @map("current_location_id")
   currentLocation       Planet?               @relation(fields: [currentLocationId], references: [id])
-  starships             Starship[]
+  starship              Starship?             @relation(fields: [starshipId], references: [id])
+  starshipId            Int?
 }
 
 model Starship {
@@ -47,8 +48,8 @@ model Starship {
   longitude       Float
   currentPlanetId Int         @map("current_planet_id")
   currentPlanet   Planet?     @relation(fields: [currentPlanetId], references: [id])
-  passengers      Character[]
   enemies         Starship[]  @relation("enemies")
   Starship        Starship?   @relation("enemies", fields: [starshipId], references: [id])
   starshipId      Int?
+  passengers      Character[]
 }

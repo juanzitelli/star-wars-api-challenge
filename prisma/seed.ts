@@ -61,9 +61,7 @@ async function main() {
       species: "Human",
       sensitivityToTheForce: SensitivityToTheForce.High,
       currentLocationId: venus.id,
-      starships: {
-        connect: { id: xWing.id },
-      },
+      starshipId: xWing.id,
     },
   });
 
@@ -73,11 +71,10 @@ async function main() {
       species: "Human",
       sensitivityToTheForce: SensitivityToTheForce.Low,
       currentLocationId: jupiter.id,
-      starships: {
-        connect: { id: yWing.id },
-      },
+      starshipId: yWing.id,
     },
   });
+
   const earth = await prisma.planet.create({
     data: {
       name: "Earth",
@@ -128,9 +125,7 @@ async function main() {
       species: "Human",
       sensitivityToTheForce: SensitivityToTheForce.High,
       currentLocationId: earth.id,
-      starships: {
-        connect: { id: millenniumFalcon.id },
-      },
+      starshipId: millenniumFalcon.id,
     },
   });
 
@@ -140,9 +135,7 @@ async function main() {
       species: "Human",
       sensitivityToTheForce: SensitivityToTheForce.High,
       currentLocationId: mars.id,
-      starships: {
-        connect: { id: starDestroyer.id },
-      },
+      starshipId: starDestroyer.id,
     },
   });
 }

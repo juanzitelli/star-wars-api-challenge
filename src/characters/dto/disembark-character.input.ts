@@ -3,12 +3,8 @@ import { Character as CharacterSchema } from "@prisma/client";
 import { IsNotEmpty } from "class-validator";
 
 @InputType()
-export class RelocateCharacterArgs {
+export class DisembarkCharacterInput {
   @Field(() => Int)
   @IsNotEmpty()
-  planetId: CharacterSchema["currentLocationId"];
-
-  @Field(() => Int)
-  @IsNotEmpty()
-  id: CharacterSchema["id"];
+  characterId: CharacterSchema["id"];
 }

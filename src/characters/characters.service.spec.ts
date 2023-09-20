@@ -2,6 +2,8 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "./../db/prisma.service";
 import { CharactersService } from "./characters.service";
+import { EmbarkCharacterInput } from "./dto/embark-character.input";
+import { DisembarkCharacterInput } from "./dto/disembark-character.input";
 
 describe("CharactersService", () => {
   let service: CharactersService;
@@ -124,8 +126,37 @@ describe("CharactersService", () => {
       id: params.where.id,
     });
 
-    expect(await service.relocateCharacter(params)).toEqual({
+    expect(await service.relocate(params)).toEqual({
       id: params.where.id,
+    });
+  });
+
+  it("should embark a character to a starship", async () => {
+    const params: EmbarkCharacterInput = {
+      characterId: 1,
+      starshipId: 1,
+    };
+
+    prismaService.character.update = jest.fn().mockResolvedValue({
+      id: params.characterId,
+    });
+
+    expect(await service.embark(params)).toEqual({
+      id: params.characterId,
+    });
+  });
+
+  it("should disembark a character to a starship", async () => {
+    const params: DisembarkCharacterInput = {
+      characterId: 1,
+    };
+
+    prismaService.character.update = jest.fn().mockResolvedValue({
+      id: params.characterId,
+    });
+
+    expect(await service.disembark(params)).toEqual({
+      id: params.characterId,
     });
   });
 });

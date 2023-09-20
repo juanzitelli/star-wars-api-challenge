@@ -8,7 +8,8 @@ type Character {
   name: String!
   sensitivityToTheForce: String!
   species: String!
-  starships: [Starship!]!
+  starship: Starship
+  starshipId: Float
 }
 
 input CreateCharacterInput {
@@ -37,11 +38,22 @@ input CreateStarshipInput {
   starshipId: Int!
 }
 
+input DisembarkCharacterInput {
+  characterId: Int!
+}
+
+input EmbarkCharacterInput {
+  characterId: Int!
+  starshipId: Int!
+}
+
 type Mutation {
   createCharacter(createCharacterInput: CreateCharacterInput!): Character!
   createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
   createStarship(createStarshipInput: CreateStarshipInput!): Starship!
-  relocateCharacter(relocateCharacterArgs: RelocateCharacterArgs!): Character!
+  disembarkCharacter(disembarkCharacterInput: DisembarkCharacterInput!): Character!
+  embarkCharacter(embarkCharacterInput: EmbarkCharacterInput!): Character!
+  relocateCharacter(relocateCharacterInput: RelocateCharacterInput!): Character!
   removeCharacter(id: Int!): Character!
   removePlanet(id: Int!): Planet!
   removeStarship(id: Int!): Starship!
@@ -57,6 +69,7 @@ type Planet {
   longitude: Float!
   name: String!
   population: Int!
+  starships: Starship
   terrain: String!
 }
 
@@ -69,7 +82,7 @@ type Query {
   starships: [Starship!]!
 }
 
-input RelocateCharacterArgs {
+input RelocateCharacterInput {
   id: Int!
   planetId: Int!
 }
@@ -82,7 +95,6 @@ type Starship {
   longitude: Float!
   model: String!
   name: String!
-  starshipId: Int!
 }
 
 input UpdateCharacterInput {
@@ -94,13 +106,13 @@ input UpdateCharacterInput {
 }
 
 input UpdatePlanetInput {
-  climate: String
+  climate: String!
   id: Int!
-  latitude: Float
-  longitude: Float
-  name: String
-  population: Int
-  terrain: String
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  population: Int!
+  terrain: String!
 }
 
 input UpdateStarshipInput {

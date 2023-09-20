@@ -19,6 +19,9 @@ export class Character {
   @Field(() => Number)
   currentLocationId: CharacterSchema["currentLocationId"];
 
-  @Field(() => [Starship])
-  starships: Array<Starship>;
+  @Field(() => Starship, { nullable: true })
+  starship: Starship;
+
+  @Field(() => Number, { nullable: true })
+  starshipId: CharacterSchema["starshipId"];
 }

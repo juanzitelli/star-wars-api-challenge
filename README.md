@@ -46,7 +46,7 @@ $ pnpm run test:cov
   - [x] Planet
   - [x] Starship
 - [x] Functionality to relocate a character from one planet to another.
-- [ ] Boarding or disembarking a character from a starship.
+- [x] Boarding or disembarking a character from a starship.
 - [ ] Traveling capability for a starship from its current location to a destination planet.
 - [ ] Calculate the distance of a starship from a specified planet using a GPS-like algorithm.
 - [ ] Recognize nearby enemy starships within a set range.

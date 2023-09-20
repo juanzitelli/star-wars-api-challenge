@@ -24,7 +24,7 @@ export class CharactersService {
   async findAll(): Promise<Array<Character>> {
     return this.prisma.character.findMany({
       include: {
-        starships: true,
+        starship: true,
       },
     });
   }
@@ -33,7 +33,10 @@ export class CharactersService {
     where: Prisma.CharacterWhereUniqueInput;
   }): Promise<Character> {
     const { where } = params;
-    return this.prisma.character.findUnique({ where });
+    return this.prisma.character.findUnique({
+      where,
+      include: { starship: true },
+    });
   }
 
   async remove(params: {
@@ -43,7 +46,7 @@ export class CharactersService {
     return this.prisma.character.delete({ where });
   }
 
-  async relocateCharacter(params: {
+  async relocate(params: {
     planetId: number;
     where: Prisma.CharacterWhereUniqueInput;
   }): Promise<Character> {
@@ -51,6 +54,36 @@ export class CharactersService {
     return this.prisma.character.update({
       data: { currentLocationId: planetId },
       where,
+    });
+  }
+
+  async embark(params: {
+    starshipId: number;
+    characterId: number;
+  }): Promise<Character> {
+    const { starshipId, characterId } = params;
+    return this.prisma.character.update({
+      data: {
+        starship: {
+          connect: {
+            id: starshipId,
+          },
+        },
+      },
+      where: {
+        id: characterId,
+      },
+    });
+  }
+  async disembark(params: { characterId: number }): Promise<Character> {
+    const { characterId } = params;
+    return this.prisma.character.update({
+      data: {
+        starshipId: null,
+      },
+      where: {
+        id: characterId,
+      },
     });
   }
 }
