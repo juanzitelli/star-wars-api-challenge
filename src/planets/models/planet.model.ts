@@ -26,9 +26,9 @@ export class Planet {
   @Field(() => Float)
   longitude: PlanetSchema["longitude"];
 
-  @Field(() => Starship, { nullable: true })
+  @Field(() => [Starship], { nullable: true })
   starships: Array<Starship>;
 
-  @Field(() => Character, { nullable: true })
+  @Field(() => [Character], { nullable: true })
   characters: Array<Character>;
 }

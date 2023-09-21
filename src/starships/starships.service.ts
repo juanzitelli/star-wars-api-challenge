@@ -6,49 +6,23 @@ import { PrismaService } from "./../db/prisma.service";
 export class StarshipsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(params: { data: Prisma.StarshipCreateInput }) {
-    return await this.prisma.starship.create({
-      ...params,
-      include: {
-        currentPlanet: true,
-      },
-    });
+  async create(params: Prisma.StarshipCreateArgs) {
+    return await this.prisma.starship.create(params);
   }
 
   async findAll(params: Prisma.StarshipFindManyArgs) {
-    return await this.prisma.starship.findMany({
-      ...params,
-      include: {
-        currentPlanet: true,
-      },
-    });
+    return await this.prisma.starship.findMany(params);
   }
 
-  async findOne(params: {
-    where: Prisma.StarshipWhereUniqueInput;
-    select?: Prisma.StarshipSelect;
-  }) {
-    return await this.prisma.starship.findUnique({
-      ...params,
-      include: {
-        currentPlanet: true,
-      },
-    });
+  async findOne(params: Prisma.StarshipFindUniqueArgs) {
+    return await this.prisma.starship.findUnique(params);
   }
 
-  async update(params: {
-    data: Prisma.StarshipUpdateInput;
-    where: Prisma.StarshipWhereUniqueInput;
-  }) {
-    return await this.prisma.starship.update({
-      ...params,
-      include: {
-        currentPlanet: true,
-      },
-    });
+  async update(params: Prisma.StarshipUpdateArgs) {
+    return await this.prisma.starship.update(params);
   }
 
-  async remove(params: { where: Prisma.StarshipWhereUniqueInput }) {
+  async remove(params: Prisma.StarshipDeleteArgs) {
     return await this.prisma.starship.delete(params);
   }
 }

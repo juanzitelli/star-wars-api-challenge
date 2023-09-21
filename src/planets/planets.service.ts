@@ -14,10 +14,7 @@ export class PlanetsService {
     return await this.prisma.planet.findMany(params);
   }
 
-  async findOne(params: {
-    where: Prisma.PlanetWhereUniqueInput;
-    select?: Prisma.PlanetSelect;
-  }) {
+  async findOne(params: Prisma.PlanetFindUniqueArgs) {
     return await this.prisma.planet.findUnique(params);
   }
 

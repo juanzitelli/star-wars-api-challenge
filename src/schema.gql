@@ -10,6 +10,7 @@ input CalculateDistanceToStarshipInput {
 type Character {
   currentLocation: Planet
   currentLocationId: Float!
+  enemies: [Character!]
   id: Float!
   name: String!
   sensitivityToTheForce: String!
@@ -72,14 +73,14 @@ type Mutation {
 }
 
 type Planet {
-  characters: Character
+  characters: [Character!]
   climate: String!
   id: String!
   latitude: Float!
   longitude: Float!
   name: String!
   population: Int!
-  starships: Starship
+  starships: [Starship!]
   terrain: String!
 }
 
@@ -107,6 +108,7 @@ type Starship {
   longitude: Float!
   model: String!
   name: String!
+  passengers: [Character!]
 }
 
 input UpdateCharacterInput {

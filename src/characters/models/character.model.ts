@@ -28,4 +28,7 @@ export class Character {
 
   @Field(() => Number, { nullable: true })
   starshipId: CharacterSchema["starshipId"];
+
+  @Field(() => [Character], { nullable: true })
+  enemies: Array<Character>;
 }

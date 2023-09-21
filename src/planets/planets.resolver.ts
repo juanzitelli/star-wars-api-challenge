@@ -31,7 +31,13 @@ export class PlanetsResolver {
 
   @Query(() => Planet, { name: "planet" })
   async findOne(@Args("id", { type: () => Int }, ParseIntPipe) id: number) {
-    const planet = await this.planetsService.findOne({ where: { id } });
+    const planet = await this.planetsService.findOne({
+      where: { id },
+      include: {
+        characters: true,
+        starships: true,
+      },
+    });
 
     if (!planet)
       throw new NotFoundException(`Couldn't find a planet with the given id`);

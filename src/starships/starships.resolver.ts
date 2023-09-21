@@ -25,6 +25,9 @@ export class StarshipsResolver {
       where: {
         id: createStarshipInput.currentPlanetId,
       },
+      select: {
+        id: true,
+      },
     });
 
     if (!planet) {
@@ -41,13 +44,22 @@ export class StarshipsResolver {
     return await this.starshipsService.findAll({
       include: {
         currentPlanet: true,
+        enemies: true,
+        passengers: true,
       },
     });
   }
 
   @Query(() => Starship, { name: "starship" })
   async findOne(@Args("id", { type: () => Int }, ParseIntPipe) id: number) {
-    const starship = await this.starshipsService.findOne({ where: { id } });
+    const starship = await this.starshipsService.findOne({
+      where: { id },
+      include: {
+        currentPlanet: true,
+        enemies: true,
+        passengers: true,
+      },
+    });
 
     if (!starship) {
       throw new NotFoundException(
@@ -67,6 +79,9 @@ export class StarshipsResolver {
       where: {
         id: updateStarshipInput.currentPlanetId,
       },
+      select: {
+        id: true,
+      },
     });
 
     if (!planet) {
@@ -77,6 +92,9 @@ export class StarshipsResolver {
 
     const starship = await this.starshipsService.findOne({
       where: { id },
+      select: {
+        id: true,
+      },
     });
 
     if (!starship) {
@@ -88,6 +106,11 @@ export class StarshipsResolver {
     return await this.starshipsService.update({
       data: updateStarshipInput,
       where: { id },
+      include: {
+        currentPlanet: true,
+        enemies: true,
+        passengers: true,
+      },
     });
   }
 
@@ -97,6 +120,7 @@ export class StarshipsResolver {
   ) {
     const starship = await this.starshipsService.findOne({
       where: { id },
+      select: { id: true },
     });
 
     if (!starship) {
