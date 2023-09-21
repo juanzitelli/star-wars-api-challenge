@@ -1,6 +1,6 @@
 import { Field, InputType, Int } from "@nestjs/graphql";
 import { Character as CharacterSchema } from "@prisma/client";
-import { IsNotEmpty } from "class-validator";
+import { IsInt, IsNotEmpty } from "class-validator";
 
 @InputType()
 export class RelocateCharacterInput {
@@ -9,6 +9,7 @@ export class RelocateCharacterInput {
   planetId: CharacterSchema["currentLocationId"];
 
   @Field(() => Int)
+  @IsInt()
   @IsNotEmpty()
-  id: CharacterSchema["id"];
+  characterId: CharacterSchema["id"];
 }

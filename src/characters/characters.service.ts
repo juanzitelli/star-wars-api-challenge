@@ -1,59 +1,101 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Character, Prisma } from "@prisma/client";
 import { PrismaService } from "./../db/prisma.service";
+import { CreateCharacterInput } from "./dto/create-character.input";
+import { UpdateCharacterInput } from "./dto/update-character.input";
 
 @Injectable()
 export class CharactersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(params: {
-    data: Prisma.CharacterCreateInput;
-  }): Promise<Character> {
-    const { data } = params;
-    return this.prisma.character.create({ data });
-  }
-
-  async update(params: {
-    data: Prisma.CharacterUpdateInput;
-    where: Prisma.CharacterWhereUniqueInput;
-  }): Promise<Character> {
-    const { data, where } = params;
-    return this.prisma.character.update({ where, data });
-  }
-
-  async findAll(): Promise<Array<Character>> {
-    return this.prisma.character.findMany({
+  async create(params: { data: CreateCharacterInput }): Promise<Character> {
+    return await this.prisma.character.create({
+      ...params,
       include: {
+        currentLocation: true,
         starship: true,
       },
     });
   }
 
-  async findOne(params: {
+  async update(params: {
+    data: UpdateCharacterInput;
     where: Prisma.CharacterWhereUniqueInput;
   }): Promise<Character> {
-    const { where } = params;
-    return this.prisma.character.findUnique({
-      where,
-      include: { starship: true },
+    const character = await this.prisma.character.findUnique({
+      where: params.where,
+    });
+
+    if (!character) {
+      throw new NotFoundException(
+        `Couldn't find a character with the given parameters`,
+      );
+    }
+
+    const planet = await this.prisma.planet.findUnique({
+      where: { id: params.data.currentLocationId },
+    });
+
+    if (!planet) {
+      throw new NotFoundException(
+        `Couldn't find a planet with the given currentLocationId`,
+      );
+    }
+
+    return await this.prisma.character.update({
+      ...params,
+      include: {
+        currentLocation: true,
+        starship: true,
+      },
+    });
+  }
+
+  async findAll(
+    params: Prisma.CharacterFindManyArgs,
+  ): Promise<Array<Character>> {
+    return this.prisma.character.findMany({
+      ...params,
+      include: {
+        currentLocation: true,
+        starship: true,
+      },
+    });
+  }
+
+  async findOne(params: Prisma.CharacterFindUniqueArgs): Promise<Character> {
+    return await this.prisma.character.findUnique({
+      ...params,
+      include: {
+        currentLocation: true,
+        starship: true,
+      },
     });
   }
 
   async remove(params: {
     where: Prisma.CharacterWhereUniqueInput;
   }): Promise<Character> {
-    const { where } = params;
-    return this.prisma.character.delete({ where });
+    return this.prisma.character.delete({
+      ...params,
+      include: {
+        currentLocation: true,
+        starship: true,
+      },
+    });
   }
 
   async relocate(params: {
     planetId: number;
     where: Prisma.CharacterWhereUniqueInput;
   }): Promise<Character> {
-    const { planetId, where } = params;
     return this.prisma.character.update({
-      data: { currentLocationId: planetId },
-      where,
+      data: { currentLocationId: params.planetId },
+      where: params.where,
+      include: {
+        currentLocation: true,
+        starship: true,
+      },
     });
   }
 
@@ -61,55 +103,42 @@ export class CharactersService {
     starshipId: number;
     characterId: number;
   }): Promise<Character> {
-    const { starshipId, characterId } = params;
-
-    const starshipPassengers = await this.prisma.character.findMany({
-      where: {
-        starshipId: starshipId,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    const { cargoCapacity, name } = await this.prisma.starship.findUnique({
-      where: {
-        id: starshipId,
-      },
-      select: {
-        cargoCapacity: true,
-        name: true,
-      },
-    });
-
-    if (starshipPassengers.length < cargoCapacity) {
-      return this.prisma.character.update({
-        data: {
-          starship: {
-            connect: {
-              id: starshipId,
-            },
+    return await this.prisma.character.update({
+      data: {
+        starship: {
+          connect: {
+            id: params.starshipId,
           },
         },
-        where: {
-          id: characterId,
-        },
-      });
-    }
-
-    throw new Error(
-      `Can't embark a new character to ${name} since it's cargo capacity of ${cargoCapacity} is complete`,
-    );
-  }
-
-  async disembark(params: { characterId: number }): Promise<Character> {
-    const { characterId } = params;
-    return this.prisma.character.update({
-      data: {
-        starshipId: null,
       },
       where: {
-        id: characterId,
+        id: params.characterId,
+      },
+      include: {
+        currentLocation: true,
+        starship: true,
+      },
+    });
+  }
+
+  async disembark(params: {
+    characterId: number;
+    starshipId: number;
+  }): Promise<Character> {
+    return await this.prisma.character.update({
+      data: {
+        starship: {
+          disconnect: {
+            id: params.starshipId,
+          },
+        },
+      },
+      where: {
+        id: params.characterId,
+      },
+      include: {
+        currentLocation: true,
+        starship: true,
       },
     });
   }

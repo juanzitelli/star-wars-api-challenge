@@ -1,6 +1,9 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { Character as CharacterSchema } from "@prisma/client";
-import { IsNotEmpty } from "class-validator";
+import {
+  Character as CharacterSchema,
+  SensitivityToTheForce,
+} from "@prisma/client";
+import { IsIn, IsNotEmpty } from "class-validator";
 
 @InputType()
 export class CreateCharacterInput {
@@ -14,6 +17,11 @@ export class CreateCharacterInput {
 
   @Field(() => String)
   @IsNotEmpty()
+  @IsIn([
+    SensitivityToTheForce.High,
+    SensitivityToTheForce.Low,
+    SensitivityToTheForce.Medium,
+  ])
   sensitivityToTheForce: CharacterSchema["sensitivityToTheForce"];
 
   @Field(() => Number)

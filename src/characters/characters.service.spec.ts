@@ -2,8 +2,9 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "./../db/prisma.service";
 import { CharactersService } from "./characters.service";
+import { CreateCharacterInput } from "./dto/create-character.input";
 import { EmbarkCharacterInput } from "./dto/embark-character.input";
-import { DisembarkCharacterInput } from "./dto/disembark-character.input";
+import { UpdateCharacterInput } from "./dto/update-character.input";
 
 describe("CharactersService", () => {
   let service: CharactersService;
@@ -18,6 +19,9 @@ describe("CharactersService", () => {
       remove: jest.fn(),
     },
     starship: {
+      findUnique: jest.fn(),
+    },
+    planet: {
       findUnique: jest.fn(),
     },
   };
@@ -42,16 +46,12 @@ describe("CharactersService", () => {
   });
 
   it("should create a character", async () => {
-    const params: { data: Prisma.CharacterCreateInput } = {
+    const params: { data: CreateCharacterInput } = {
       data: {
         name: "Test Character",
-        currentLocation: {
-          connect: {
-            id: 1,
-          },
-        },
         sensitivityToTheForce: "High",
         species: "animal",
+        currentLocationId: 1,
       },
     };
 
@@ -62,16 +62,30 @@ describe("CharactersService", () => {
 
   it("should update a character", async () => {
     const params: {
-      data: Prisma.CharacterUpdateInput;
+      data: UpdateCharacterInput;
       where: Prisma.CharacterWhereUniqueInput;
     } = {
-      data: { name: "Updated Character" },
+      data: {
+        name: "Updated Character",
+        currentLocationId: 1,
+        id: 1,
+        sensitivityToTheForce: "High",
+        species: "Human",
+      },
       where: { id: 1 },
     };
+
+    prismaService.planet.findUnique = jest.fn().mockResolvedValue({
+      id: 1,
+    });
 
     prismaService.character.update = jest.fn().mockResolvedValue({
       id: 1,
       name: "Updated Character",
+    });
+
+    prismaService.character.findUnique = jest.fn().mockResolvedValue({
+      id: 1,
     });
 
     expect(await service.update(params)).toEqual({
@@ -88,7 +102,7 @@ describe("CharactersService", () => {
 
     prismaService.character.findMany = jest.fn().mockResolvedValue(characters);
 
-    expect(await service.findAll()).toEqual(characters);
+    expect(await service.findAll({})).toEqual(characters);
   });
 
   it("should find a character", async () => {
@@ -154,27 +168,10 @@ describe("CharactersService", () => {
     });
   });
 
-  it("should reject embarking a character to a starship because of cargo capacity", async () => {
-    const params: EmbarkCharacterInput = {
+  it("should disembark a character to a starship", async () => {
+    const params = {
       characterId: 1,
       starshipId: 1,
-    };
-
-    prismaService.character.update = jest.fn().mockResolvedValue({
-      id: params.characterId,
-    });
-
-    prismaService.starship.findUnique = jest.fn().mockResolvedValue({
-      cargoCapacity: 0,
-      name: "ship",
-    });
-
-    await expect(async () => service.embark(params)).rejects.toThrowError();
-  });
-
-  it("should disembark a character to a starship", async () => {
-    const params: DisembarkCharacterInput = {
-      characterId: 1,
     };
 
     prismaService.character.update = jest.fn().mockResolvedValue({
