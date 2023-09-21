@@ -5,20 +5,7 @@ import { PlanetsService } from "./planets.service";
 
 describe("PlanetsService", () => {
   let service: PlanetsService;
-  let prismaService: PrismaService;
-
-  const mockPrismaService = {
-    planet: {
-      create: jest.fn(),
-      update: jest.fn(),
-      findMany: jest.fn(),
-      findUnique: jest.fn(),
-      remove: jest.fn(),
-    },
-    starship: {
-      findUnique: jest.fn(),
-    },
-  };
+  let prismaService: jest.Mocked<PrismaService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,13 +13,26 @@ describe("PlanetsService", () => {
         PlanetsService,
         {
           provide: PrismaService,
-          useValue: mockPrismaService,
+          useValue: {
+            planet: {
+              create: jest.fn(),
+              update: jest.fn(),
+              findMany: jest.fn(),
+              findUnique: jest.fn(),
+              remove: jest.fn(),
+            },
+            starship: {
+              findUnique: jest.fn(),
+            },
+          },
         },
       ],
     }).compile();
 
     service = module.get<PlanetsService>(PlanetsService);
-    prismaService = module.get<PrismaService>(PrismaService);
+    prismaService = module.get<PrismaService>(
+      PrismaService,
+    ) as unknown as jest.Mocked<PrismaService>;
   });
 
   it("should be defined", () => {

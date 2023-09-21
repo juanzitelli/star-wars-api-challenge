@@ -18,13 +18,17 @@ describe("CharactersResolver", () => {
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       providers: [
-        StarshipsResolver,
         CharactersResolver,
+        StarshipsResolver,
         PrismaService,
         {
           provide: CharactersService,
           useValue: {
             create: jest.fn(),
+            embark: jest.fn(),
+            findAll: jest.fn(),
+            update: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
@@ -43,10 +47,12 @@ describe("CharactersResolver", () => {
         },
       ],
     }).compile();
+
+    resolver = moduleRef.get<CharactersResolver>(CharactersResolver);
+
     charactersService = moduleRef.get<CharactersService>(
       CharactersService,
     ) as unknown as jest.Mocked<CharactersService>;
-    resolver = moduleRef.get<CharactersResolver>(CharactersResolver);
     planetsService = moduleRef.get<PlanetsService>(
       PlanetsService,
     ) as jest.Mocked<PlanetsService>;
@@ -65,18 +71,74 @@ describe("CharactersResolver", () => {
       starshipId: 1,
     };
 
-    charactersService.update = jest.fn().mockResolvedValue({
-      id: params.characterId,
+    starshipsService.findOne.mockResolvedValue({
+      cargoCapacity: 0,
+      id: 11,
+      name: "X-Wing",
+      model: "T-65B",
+      currentPlanetId: 1,
+      starshipId: 1,
+      latitude: 30.43530749668798,
+      longitude: 56.89623295380929,
     });
 
-    starshipsService.findOne = jest.fn().mockResolvedValue({
-      cargoCapacity: 0,
-      name: "ship",
+    charactersService.update.mockResolvedValue({
+      id: params.characterId,
+      name: "Han Solo",
+      sensitivityToTheForce: "Low",
+      species: "Human",
+      currentLocationId: 1,
+      starshipId: 14,
     });
 
     await expect(async () =>
-      charactersService.embark(params),
+      resolver.embarkCharacter(params),
     ).rejects.toThrowError();
+  });
+
+  it("should embark a character when both character and starship input are valid", async () => {
+    const findOneReturnValue: Awaited<
+      ReturnType<CharactersService["findOne"]>
+    > = {
+      id: 12,
+      name: "Han Solo",
+      sensitivityToTheForce: "Low",
+      species: "Human",
+      starshipId: 14,
+      currentLocationId: 1,
+    };
+
+    charactersService.findOne.mockResolvedValue(findOneReturnValue);
+
+    const findOneStarshipReturnValue: Awaited<
+      ReturnType<StarshipsService["findOne"]>
+    > = {
+      id: 12,
+      currentPlanetId: 1,
+      starshipId: 1,
+      name: "Y-Wing",
+      model: "BTL-B Y-wing starfighter",
+      cargoCapacity: 2,
+      latitude: -40.90587021435161,
+      longitude: 83.6093189837539,
+    };
+
+    starshipsService.findOne.mockResolvedValue(findOneStarshipReturnValue);
+
+    const findAllReturnValue: Awaited<
+      ReturnType<CharactersService["findAll"]>
+    > = [findOneReturnValue];
+
+    charactersService.findAll.mockResolvedValue(findAllReturnValue);
+
+    charactersService.embark.mockResolvedValue(findOneReturnValue);
+
+    expect(
+      await resolver.embarkCharacter({
+        characterId: findOneReturnValue.id,
+        starshipId: findOneStarshipReturnValue.id,
+      }),
+    ).toEqual(findOneReturnValue);
   });
 
   it("should create a new character when provided valid data", async () => {
@@ -110,7 +172,7 @@ describe("CharactersResolver", () => {
 
   it("should throw an error when provided an invalid planet id", async () => {
     const params: CreateCharacterInput = {
-      name: "new character",
+      name: "new CharactersService",
       currentLocationId: 1,
       sensitivityToTheForce: "Low",
       species: "Human",

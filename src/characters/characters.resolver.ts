@@ -158,12 +158,12 @@ export class CharactersResolver {
         characterId,
         starshipId,
       });
+    } else {
+      // TODO: Figure out right error for this
+      throw new InternalServerErrorException(
+        `Can't embark a new character to ${starship.name} since it's cargo capacity of ${starship.cargoCapacity} is complete`,
+      );
     }
-
-    // TODO: Figure out right error for this
-    throw new InternalServerErrorException(
-      `Can't embark a new character to ${starship.name} since it's cargo capacity of ${starship.cargoCapacity} is complete`,
-    );
   }
 
   @Mutation(() => Character)
