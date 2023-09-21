@@ -10,11 +10,14 @@ export class PlanetsService {
     return await this.prisma.planet.create(params);
   }
 
-  async findAll() {
-    return await this.prisma.planet.findMany();
+  async findAll(params: Prisma.PlanetFindManyArgs) {
+    return await this.prisma.planet.findMany(params);
   }
 
-  async findOne(params: { where: Prisma.PlanetWhereUniqueInput }) {
+  async findOne(params: {
+    where: Prisma.PlanetWhereUniqueInput;
+    select?: Prisma.PlanetSelect;
+  }) {
     return await this.prisma.planet.findUnique(params);
   }
 
@@ -30,8 +33,14 @@ export class PlanetsService {
   }
 
   async calculateDistanceToStarship(params: {
-    planetId: number;
-    starshipId: number;
+    planet: {
+      latitude: number;
+      longitude: number;
+    };
+    starship: {
+      latitude: number;
+      longitude: number;
+    };
   }) {
     const toRadians = (degrees: number): number => (degrees * Math.PI) / 180;
     /*
@@ -68,29 +77,13 @@ export class PlanetsService {
       return earthRadius * c;
     };
 
-    const planet = await this.prisma.planet.findUnique({
-      where: { id: params.planetId },
-      select: {
-        latitude: true,
-        longitude: true,
-      },
-    });
-
-    const starship = await this.prisma.starship.findUnique({
-      where: { id: params.starshipId },
-      select: {
-        latitude: true,
-        longitude: true,
-      },
-    });
-
-    const distance = getDistanceInMeters(
-      planet.latitude,
-      planet.longitude,
-      starship.latitude,
-      starship.longitude,
+    const distanceInMeters = getDistanceInMeters(
+      params.planet.latitude,
+      params.planet.longitude,
+      params.starship.latitude,
+      params.starship.longitude,
     );
 
-    return { distance };
+    return { distanceInMeters };
   }
 }
