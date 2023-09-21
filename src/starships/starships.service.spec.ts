@@ -85,7 +85,7 @@ describe("StarshipsService", () => {
 
     prismaService.starship.findMany = jest.fn().mockResolvedValue(starships);
 
-    expect(await service.findAll()).toEqual(starships);
+    expect(await service.findAll({})).toEqual(starships);
   });
 
   it("should find a starship", async () => {

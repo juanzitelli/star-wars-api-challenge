@@ -1,4 +1,10 @@
+import {
+  BadRequestException,
+  NotFoundException,
+  ParseIntPipe,
+} from "@nestjs/common";
 import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { PlanetsService } from "./../planets/planets.service";
 import { CreateStarshipInput } from "./dto/create-starship.input";
 import { UpdateStarshipInput } from "./dto/update-starship.input";
 import { Starship } from "./models/starship.model";
@@ -6,38 +12,99 @@ import { StarshipsService } from "./starships.service";
 
 @Resolver(() => Starship)
 export class StarshipsResolver {
-  constructor(private readonly starshipsService: StarshipsService) {}
+  constructor(
+    private readonly starshipsService: StarshipsService,
+    private readonly planetsService: PlanetsService,
+  ) {}
 
   @Mutation(() => Starship)
-  createStarship(
+  async createStarship(
     @Args("createStarshipInput") createStarshipInput: CreateStarshipInput,
   ) {
-    return this.starshipsService.create({ data: createStarshipInput });
+    const planet = await this.planetsService.findOne({
+      where: {
+        id: createStarshipInput.currentPlanetId,
+      },
+    });
+
+    if (!planet) {
+      throw new BadRequestException(
+        `Couldn't find any planet with the given currentPlanetId`,
+      );
+    }
+
+    return await this.starshipsService.create({ data: createStarshipInput });
   }
 
   @Query(() => [Starship], { name: "starships" })
-  findAll() {
-    return this.starshipsService.findAll();
+  async findAll() {
+    return await this.starshipsService.findAll({
+      include: {
+        currentPlanet: true,
+      },
+    });
   }
 
   @Query(() => Starship, { name: "starship" })
-  findOne(@Args("id", { type: () => Int }) id: number) {
-    return this.starshipsService.findOne({ where: { id } });
+  async findOne(@Args("id", { type: () => Int }, ParseIntPipe) id: number) {
+    const starship = await this.starshipsService.findOne({ where: { id } });
+
+    if (!starship) {
+      throw new NotFoundException(
+        `Couldn't find a starship with the given parameters`,
+      );
+    }
+
+    return starship;
   }
 
   @Mutation(() => Starship)
-  updateStarship(
+  async updateStarship(
     @Args("updateStarshipInput")
     { id, ...updateStarshipInput }: UpdateStarshipInput,
   ) {
-    return this.starshipsService.update({
+    const planet = await this.planetsService.findOne({
+      where: {
+        id: updateStarshipInput.currentPlanetId,
+      },
+    });
+
+    if (!planet) {
+      throw new BadRequestException(
+        `Couldn't find any planet with the given currentPlanetId`,
+      );
+    }
+
+    const starship = await this.starshipsService.findOne({
+      where: { id },
+    });
+
+    if (!starship) {
+      throw new NotFoundException(
+        `Couldn't find a starship with the given parameters`,
+      );
+    }
+
+    return await this.starshipsService.update({
       data: updateStarshipInput,
       where: { id },
     });
   }
 
   @Mutation(() => Starship)
-  removeStarship(@Args("id", { type: () => Int }) id: number) {
+  async removeStarship(
+    @Args("id", { type: () => Int }, ParseIntPipe) id: number,
+  ) {
+    const starship = await this.starshipsService.findOne({
+      where: { id },
+    });
+
+    if (!starship) {
+      throw new NotFoundException(
+        `Couldn't find a starship with the given parameters`,
+      );
+    }
+
     return this.starshipsService.remove({ where: { id } });
   }
 }

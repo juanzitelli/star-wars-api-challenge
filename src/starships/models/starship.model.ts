@@ -1,5 +1,6 @@
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Starship as StarshipSchema } from "@prisma/client";
+import { Planet } from "./../../planets/models/planet.model";
 
 @ObjectType()
 export class Starship {
@@ -21,6 +22,9 @@ export class Starship {
   @Field(() => Float)
   longitude: StarshipSchema["longitude"];
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   currentPlanetId: StarshipSchema["currentPlanetId"];
+
+  @Field(() => Planet, { nullable: true })
+  currentPlanet: Planet;
 }
