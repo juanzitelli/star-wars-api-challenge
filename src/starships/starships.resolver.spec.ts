@@ -185,7 +185,7 @@ describe("StarshipsResolver", () => {
     ).toEqual(newEnemy);
   });
 
-  it("should throw an error before spawning a random enemy when the input is valid", async () => {
+  it("should throw an error before spawning a random enemy when the input is invalid", async () => {
     const id: number = 1;
     starshipsService.findOne.mockResolvedValueOnce(null);
 
