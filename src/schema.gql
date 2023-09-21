@@ -8,6 +8,7 @@ input CalculateDistanceToStarshipInput {
 }
 
 type Character {
+  currentLocation: Planet
   currentLocationId: Float!
   id: Float!
   name: String!
@@ -40,7 +41,6 @@ input CreateStarshipInput {
   longitude: Float!
   model: String!
   name: String!
-  starshipId: Int!
 }
 
 input DisembarkCharacterInput {
@@ -48,7 +48,7 @@ input DisembarkCharacterInput {
 }
 
 type Distance {
-  distance: Float!
+  distanceInMeters: Float!
 }
 
 input EmbarkCharacterInput {
@@ -72,6 +72,7 @@ type Mutation {
 }
 
 type Planet {
+  characters: Character
   climate: String!
   id: String!
   latitude: Float!
@@ -93,13 +94,14 @@ type Query {
 }
 
 input RelocateCharacterInput {
-  id: Int!
+  characterId: Int!
   planetId: Int!
 }
 
 type Starship {
   cargoCapacity: Int!
-  currentPlanetId: Int!
+  currentPlanet: Planet
+  currentPlanetId: Int
   id: Int!
   latitude: Float!
   longitude: Float!
@@ -108,21 +110,21 @@ type Starship {
 }
 
 input UpdateCharacterInput {
-  currentLocationId: Float!
+  currentLocationId: Float
   id: Float!
-  name: String!
-  sensitivityToTheForce: String!
-  species: String!
+  name: String
+  sensitivityToTheForce: String
+  species: String
 }
 
 input UpdatePlanetInput {
-  climate: String!
+  climate: String
   id: Int!
-  latitude: Float!
-  longitude: Float!
-  name: String!
-  population: Int!
-  terrain: String!
+  latitude: Float
+  longitude: Float
+  name: String
+  population: Int
+  terrain: String
 }
 
 input UpdateStarshipInput {
@@ -133,5 +135,4 @@ input UpdateStarshipInput {
   longitude: Float
   model: String
   name: String
-  starshipId: Int
 }

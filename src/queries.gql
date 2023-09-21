@@ -1,63 +1,5 @@
-query CalculateDistanceToStarship {
-  calculateDistanceToStarship(
-    calculateDistanceToStarshipInput: { starshipId: 4, planetId: 3 }
-  ) {
-    distance
-  }
-}
-
-mutation DisembarkCharacter {
-  disembarkCharacter(disembarkCharacterInput: { characterId: 4 }) {
-    id
-    name
-  }
-}
-
-mutation EmbarkCharacter {
-  embarkCharacter(embarkCharacterInput: { starshipId: 3, characterId: 4 }) {
-    id
-    name
-  }
-}
-
-mutation RelocateCharacter {
-  relocateCharacter(relocateCharacterInput: { id: 2, planetId: 1 }) {
-    id
-    currentLocationId
-  }
-}
-
-query GetCharacterById {
-  character(id: 4) {
-    id
-    name
-    currentLocationId
-    sensitivityToTheForce
-    species
-    starshipId
-    starship {
-      id
-      name
-    }
-  }
-}
-
-query GetAllCharacters {
-  characters {
-    id
-    name
-    currentLocationId
-    sensitivityToTheForce
-    species
-    starship {
-      name
-      id
-    }
-  }
-}
-
 query GetPlanetById {
-  planet(id: 3) {
+  planet(id: 12) {
     id
     name
     climate
@@ -66,6 +8,7 @@ query GetPlanetById {
     population
     terrain
     starships {
+      # fix
       id
       name
     }
@@ -81,47 +24,6 @@ query GetAllPlanets {
     longitude
     population
     terrain
-    starships {
-      id
-      name
-    }
-  }
-}
-
-query GetStarshipById {
-  starship(id: 4) {
-    id
-    name
-    model
-    cargoCapacity
-    currentPlanetId
-    latitude
-    longitude
-  }
-}
-
-query GetAllStarships {
-  starships {
-    id
-    name
-    model
-    cargoCapacity
-    currentPlanetId
-    latitude
-    longitude
-  }
-}
-
-mutation CreateCharacter {
-  createCharacter(
-    createCharacterInput: {
-      currentLocationId: 1.0
-      name: "John Doe"
-      sensitivityToTheForce: "High"
-      species: "Human"
-    }
-  ) {
-    id
   }
 }
 
@@ -140,16 +42,171 @@ mutation CreatePlanet {
   }
 }
 
+mutation RemovePlanet {
+  removePlanet(id: 16) {
+    id
+  }
+}
+
+mutation UpdatePlanet {
+  updatePlanet(updatePlanetInput: { id: 12, name: "Super Venus" }) {
+    id
+  }
+}
+
+query CalculateDistanceToStarship {
+  calculateDistanceToStarship(
+    calculateDistanceToStarshipInput: { starshipId: 13, planetId: 12 }
+  ) {
+    distanceInMeters
+  }
+}
+
+query GetStarshipById {
+  starship(id: 13) {
+    id
+    name
+    model
+    cargoCapacity
+    currentPlanet {
+      id
+      name
+    }
+    latitude
+    longitude
+  }
+}
+
+query GetAllStarships {
+  starships {
+    id
+    name
+    model
+    cargoCapacity
+    currentPlanet {
+      id
+      name
+    }
+    latitude
+    longitude
+    currentPlanet {
+      id
+      name
+    }
+  }
+}
+
 mutation CreateStarship {
   createStarship(
     createStarshipInput: {
       cargoCapacity: 1000
-      currentPlanetId: 1
+      currentPlanetId: 12
       latitude: 22.0
       longitude: 23.0
       model: "A-Wing"
       name: "Star Destroyer"
-      starshipId: 1
+    }
+  ) {
+    id
+    currentPlanet {
+      id
+      name
+    }
+  }
+}
+
+mutation RemoveStarship {
+  removeStarship(id: 18) {
+    id
+    name
+  }
+}
+
+mutation UpdateStarship {
+  updateStarship(
+    updateStarshipInput: {
+      cargoCapacity: 5
+      currentPlanetId: 15
+      id: 14
+      latitude: 33.0
+      longitude: 44.0
+      model: "B-Wing"
+      name: "Death Star"
+    }
+  ) {
+    id
+    currentPlanet {
+      name
+    }
+  }
+}
+
+query GetCharacterById {
+  character(id: 11) {
+    id
+    name
+    currentLocationId
+    sensitivityToTheForce
+    species
+    starshipId
+    currentLocation {
+      id
+      name
+    }
+    starship {
+      id
+      name
+    }
+  }
+}
+
+query GetAllCharacters {
+  characters {
+    id
+    name
+    sensitivityToTheForce
+    species
+    currentLocation {
+      id
+      name
+    }
+    starshipId
+    starship {
+      name
+      id
+    }
+  }
+}
+
+mutation DisembarkCharacter {
+  disembarkCharacter(disembarkCharacterInput: { characterId: 11 }) {
+    id
+    name
+  }
+}
+
+mutation EmbarkCharacter {
+  embarkCharacter(embarkCharacterInput: { starshipId: 11, characterId: 13 }) {
+    id
+    name
+  }
+}
+
+mutation RelocateCharacter {
+  relocateCharacter(relocateCharacterInput: { characterId: 11, planetId: 12 }) {
+    id
+    currentLocationId
+    name
+  }
+}
+
+mutation CreateCharacter {
+  createCharacter(
+    createCharacterInput: {
+      currentLocationId: 12
+      name: "John Doe"
+      sensitivityToTheForce: "High"
+      species: "Human"
     }
   ) {
     id
@@ -157,66 +214,25 @@ mutation CreateStarship {
 }
 
 mutation RemoveCharacter {
-  removeCharacter(id: 1) {
+  removeCharacter(id: 15) {
     id
-  }
-}
-
-mutation RemovePlanet {
-  removePlanet(id: 7) {
-    id
-  }
-}
-
-mutation RemoveStarship {
-  removeStarship(id: 1) {
-    name
   }
 }
 
 mutation UpdateCharacter {
   updateCharacter(
     updateCharacterInput: {
-      currentLocationId: 1.0
-      id: 1.0
-      name: "Jane Doe"
-      sensitivityToTheForce: "Moderate"
+      currentLocationId: 14
+      id: 11
+      name: "Leia"
+      sensitivityToTheForce: "Low"
       species: "Alien"
     }
   ) {
     id
-  }
-}
-
-mutation UpdatePlanet {
-  updatePlanet(
-    updatePlanetInput: {
-      climate: "Cold"
-      id: 1
-      latitude: 33.0
-      longitude: 44.0
-      name: "Mars"
-      population: 1000
-      terrain: "Rocky"
-    }
-  ) {
-    id
-  }
-}
-
-mutation UpdateStarship {
-  updateStarship(
-    updateStarshipInput: {
-      cargoCapacity: 2000
-      currentPlanetId: 2
-      id: 2
-      latitude: 33.0
-      longitude: 44.0
-      model: "B-Wing"
-      name: "Death Star"
-      starshipId: 2
-    }
-  ) {
-    id
+    currentLocationId
+    name
+    sensitivityToTheForce
+    species
   }
 }

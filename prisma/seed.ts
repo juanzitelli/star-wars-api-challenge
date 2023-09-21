@@ -116,6 +116,13 @@ async function main() {
       latitude: randomLatitude(),
       longitude: randomLongitude(),
       currentPlanetId: mars.id,
+      enemies: {
+        connect: [
+          {
+            id: millenniumFalcon.id,
+          },
+        ],
+      },
     },
   });
 
