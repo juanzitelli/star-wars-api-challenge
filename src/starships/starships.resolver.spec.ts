@@ -22,6 +22,7 @@ describe("StarshipsResolver", () => {
             create: jest.fn(),
             findOne: jest.fn(),
             remove: jest.fn(),
+            spawnRandomEnemy: jest.fn(),
           },
         },
         {
@@ -134,5 +135,62 @@ describe("StarshipsResolver", () => {
     starshipsService.findOne.mockResolvedValueOnce(null);
 
     await expect(resolver.removeStarship(id)).rejects.toThrowError();
+  });
+
+  it("should spawn a random enemy when the input is valid", async () => {
+    const originalStarship = {
+      id: 11,
+      name: "X-Wing",
+      model: "T-65B",
+      cargoCapacity: 1,
+      passengers: [],
+      enemies: [
+        {
+          id: 20,
+          name: "Sentinel-class landing craft",
+        },
+        {
+          id: 21,
+          name: "Millennium Falcon",
+        },
+      ],
+      latitude: 30.43530749668798,
+      longitude: 56.89623295380929,
+    };
+
+    const newEnemy = {
+      id: 23,
+      name: "Y-wing",
+      model: "BTL Y-wing",
+      cargoCapacity: 110,
+      latitude: -26.24614771059775,
+      longitude: 162.5088320499494,
+      currentPlanetId: null,
+      starshipId: null,
+      enemies: [
+        { ...originalStarship, currentPlanetId: null, starshipId: null },
+      ],
+    };
+
+    starshipsService.findOne.mockResolvedValueOnce({
+      ...originalStarship,
+      currentPlanetId: null,
+      starshipId: null,
+    });
+
+    starshipsService.spawnRandomEnemy.mockResolvedValueOnce(newEnemy);
+
+    expect(
+      await resolver.spawnRandomEnemy({ starshipId: originalStarship.id }),
+    ).toEqual(newEnemy);
+  });
+
+  it("should throw an error before spawning a random enemy when the input is valid", async () => {
+    const id: number = 1;
+    starshipsService.findOne.mockResolvedValueOnce(null);
+
+    await expect(
+      resolver.spawnRandomEnemy({ starshipId: id }),
+    ).rejects.toThrowError();
   });
 });

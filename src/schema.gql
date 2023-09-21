@@ -67,6 +67,7 @@ type Mutation {
   removeCharacter(id: Int!): Character!
   removePlanet(id: Int!): Planet!
   removeStarship(id: Int!): Starship!
+  spawnRandomEnemy(spawnRandomEnemyInput: SpawnRandomEnemyInput!): Starship!
   updateCharacter(updateCharacterInput: UpdateCharacterInput!): Character!
   updatePlanet(updatePlanetInput: UpdatePlanetInput!): Planet!
   updateStarship(updateStarshipInput: UpdateStarshipInput!): Starship!
@@ -97,6 +98,10 @@ type Query {
 input RelocateCharacterInput {
   characterId: Int!
   planetId: Int!
+}
+
+input SpawnRandomEnemyInput {
+  starshipId: Int!
 }
 
 type Starship {

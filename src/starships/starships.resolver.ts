@@ -6,6 +6,7 @@ import {
 import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { PlanetsService } from "./../planets/planets.service";
 import { CreateStarshipInput } from "./dto/create-starship.input";
+import { SpawnRandomEnemyInput } from "./dto/spawn-random-enemy.input";
 import { UpdateStarshipInput } from "./dto/update-starship.input";
 import { Starship } from "./models/starship.model";
 import { StarshipsService } from "./starships.service";
@@ -130,5 +131,25 @@ export class StarshipsResolver {
     }
 
     return this.starshipsService.remove({ where: { id } });
+  }
+
+  @Mutation(() => Starship)
+  async spawnRandomEnemy(
+    @Args("spawnRandomEnemyInput") spawnRandomEnemyInput: SpawnRandomEnemyInput,
+  ) {
+    const starship = await this.starshipsService.findOne({
+      where: { id: spawnRandomEnemyInput.starshipId },
+      select: { id: true },
+    });
+
+    if (!starship) {
+      throw new NotFoundException(
+        `Couldn't find a starship with the given parameters`,
+      );
+    }
+
+    return await this.starshipsService.spawnRandomEnemy({
+      starshipId: spawnRandomEnemyInput.starshipId,
+    });
   }
 }

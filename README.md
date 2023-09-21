@@ -38,7 +38,7 @@ $ pnpm run test:cov
 
 # Functionality
 
-> 📔 A checked item equals to a finished feature
+> A checked item equals to a finished feature 📔
 
 - [x] Standard CRUD operations for Planet, Character, and Starship.
   - [x] Characters
@@ -49,4 +49,4 @@ $ pnpm run test:cov
 - [ ] Traveling capability for a starship from its current location to a destination planet.
 - [x] Calculate the distance of a starship from a specified planet using a GPS-like algorithm.
 - [ ] Recognize nearby enemy starships within a set range.
-- [ ] Spawn random enemy starships in the universe.
+- [x] Spawn random enemy starships in the universe.
