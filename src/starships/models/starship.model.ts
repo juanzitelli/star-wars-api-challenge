@@ -31,4 +31,7 @@ export class Starship {
 
   @Field(() => [Character], { nullable: true })
   passengers: Array<Character>;
+
+  @Field(() => [Starship], { nullable: true })
+  enemies: Array<Starship>;
 }
