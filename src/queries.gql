@@ -7,8 +7,11 @@ query GetPlanetById {
     longitude
     population
     terrain
+    characters {
+      id
+      name
+    }
     starships {
-      # fix
       id
       name
     }
@@ -24,6 +27,14 @@ query GetAllPlanets {
     longitude
     population
     terrain
+    characters {
+      id
+      name
+    }
+    starships {
+      id
+      name
+    }
   }
 }
 
@@ -63,12 +74,16 @@ query CalculateDistanceToStarship {
 }
 
 query GetStarshipById {
-  starship(id: 13) {
+  starship(id: 11) {
     id
     name
     model
     cargoCapacity
     currentPlanet {
+      id
+      name
+    }
+    passengers {
       id
       name
     }
@@ -84,6 +99,10 @@ query GetAllStarships {
     model
     cargoCapacity
     currentPlanet {
+      id
+      name
+    }
+    passengers {
       id
       name
     }
@@ -186,7 +205,7 @@ mutation DisembarkCharacter {
 }
 
 mutation EmbarkCharacter {
-  embarkCharacter(embarkCharacterInput: { starshipId: 11, characterId: 13 }) {
+  embarkCharacter(embarkCharacterInput: { starshipId: 13, characterId: 13 }) {
     id
     name
   }
