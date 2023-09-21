@@ -103,6 +103,7 @@ type Starship {
   cargoCapacity: Int!
   currentPlanet: Planet
   currentPlanetId: Int
+  enemies: [Starship!]
   id: Int!
   latitude: Float!
   longitude: Float!
