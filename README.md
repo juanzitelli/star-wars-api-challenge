@@ -45,11 +45,11 @@ This step requires you to setup a local `PostgreSQL` database. There's many diff
 
 ### 3. Pushing the schema to the recently created postgres-db database
 
-In your terminal, cd into the project folder and run `pnpm:push` to push the Prisma schema to the recently created `PostgreSQL` database.
+In your terminal, cd into the project folder and run `pnpm prisma:push` to push the Prisma schema to the recently created `PostgreSQL` database.
 
 ### 4. Seeding the database
 
-In your terminal, run `pnpm:seed` to push the `Prisma` schema to the recently created database to insert some test data to play around with the API.
+In your terminal, run `pnpm prisma:seed` to push the `Prisma` schema to the recently created database to insert some test data to play around with the API.
 
 ### 5. Install dependencies
 
