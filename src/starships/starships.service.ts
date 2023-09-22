@@ -41,7 +41,7 @@ export class StarshipsService {
       ];
 
     const randomEnemy: CreateStarshipInput = {
-      cargoCapacity: parseInt(randomStarshipData.cargo_capacity),
+      cargoCapacity: Math.floor(Math.random() * 10) + 1,
       currentPlanetId: null,
       latitude: Math.random() * 180 - 90,
       longitude: Math.random() * 360 - 180,
