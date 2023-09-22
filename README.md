@@ -43,21 +43,21 @@ This step requires you to setup a local `PostgreSQL` database. There's many diff
       3. `5432` will be the port from which you will connect to the db engine.
 4. You then should be able to see the container running either using Docker Desktop (available to you after docker is installed) or the CLI tools (`docker ps -a`)
 
-### 3. Pushing the schema to the recently created postgres-db database
-
-In your terminal, cd into the project folder and run `pnpm prisma:push` to push the Prisma schema to the recently created `PostgreSQL` database.
-
-### 4. Seeding the database
-
-In your terminal, run `pnpm prisma:seed` to push the `Prisma` schema to the recently created database to insert some test data to play around with the API.
-
-### 5. Install dependencies
+### 3. Install dependencies
 
 Run the following command to install all the required dependencies for the project using `pnpm`
 
 ```bash
 $ pnpm install
 ```
+
+### 4. Pushing the schema to the recently created postgres-db database
+
+In your terminal, cd into the project folder and run `pnpm prisma:push` to push the Prisma schema to the recently created `PostgreSQL` database.
+
+### 5. Seeding the database
+
+In your terminal, run `pnpm prisma:seed` to push the `Prisma` schema to the recently created database to insert some test data to play around with the API.
 
 ### 6. Run tests
 
