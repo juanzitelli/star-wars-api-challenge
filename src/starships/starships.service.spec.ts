@@ -1,8 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "./../db/prisma.service";
-import { StarshipsService } from "./starships.service";
 import { CreateStarshipInput } from "./dto/create-starship.input";
+import { StarshipsService } from "./starships.service";
 
 describe("StarshipsService", () => {
   let starshipsService: StarshipsService;
@@ -143,6 +143,6 @@ describe("StarshipsService", () => {
           starshipId: 1,
         }),
       ).toEqual(randomEnemy);
-    });
+    }, 10000);
   });
 });

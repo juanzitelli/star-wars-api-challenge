@@ -5,6 +5,7 @@ import {
   ParseIntPipe,
 } from "@nestjs/common";
 import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { SensitivityToTheForce } from "@prisma/client";
 import { PlanetsService } from "./../planets/planets.service";
 import { StarshipsService } from "./../starships/starships.service";
 import { CharactersService } from "./characters.service";
@@ -35,6 +36,19 @@ export class CharactersResolver {
     if (!planet) {
       throw new BadRequestException(
         `Couldn't find a planet with the given currentLocationId`,
+      );
+    }
+
+    if (
+      createCharacterInput.sensitivityToTheForce &&
+      ![
+        SensitivityToTheForce.High,
+        SensitivityToTheForce.Medium,
+        SensitivityToTheForce.Low,
+      ].includes(createCharacterInput.sensitivityToTheForce)
+    ) {
+      throw new BadRequestException(
+        "sensitivityToTheForce should be 'High', 'Low' or 'Medium'",
       );
     }
 
@@ -93,6 +107,19 @@ export class CharactersResolver {
     if (!planet) {
       throw new BadRequestException(
         `Couldn't find a planet with the given currentLocationId`,
+      );
+    }
+
+    if (
+      updateCharacterInput.sensitivityToTheForce &&
+      ![
+        SensitivityToTheForce.High,
+        SensitivityToTheForce.Medium,
+        SensitivityToTheForce.Low,
+      ].includes(updateCharacterInput.sensitivityToTheForce)
+    ) {
+      throw new BadRequestException(
+        "sensitivityToTheForce should be 'High', 'Low' or 'Medium'",
       );
     }
 
