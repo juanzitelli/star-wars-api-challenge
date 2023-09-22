@@ -41,145 +41,165 @@ describe("CharactersService", () => {
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
-  it("should be defined", () => {
-    expect(service).toBeDefined();
+  describe("service", () => {
+    it("should be defined", () => {
+      expect(service).toBeDefined();
+    });
   });
 
-  it("should create a character", async () => {
-    const params: { data: CreateCharacterInput } = {
-      data: {
-        name: "Test Character",
-        sensitivityToTheForce: "High",
-        species: "animal",
-        currentLocationId: 1,
-      },
-    };
+  describe("create", () => {
+    it("should create a character when the input is valid", async () => {
+      const params: { data: CreateCharacterInput } = {
+        data: {
+          name: "Test Character",
+          sensitivityToTheForce: "High",
+          species: "animal",
+          currentLocationId: 1,
+        },
+      };
 
-    prismaService.character.create = jest.fn().mockResolvedValue(params.data);
+      prismaService.character.create = jest.fn().mockResolvedValue(params.data);
 
-    expect(await service.create(params)).toEqual(params.data);
+      expect(await service.create(params)).toEqual(params.data);
+    });
   });
 
-  it("should update a character", async () => {
-    const params: {
-      data: UpdateCharacterInput;
-      where: Prisma.CharacterWhereUniqueInput;
-    } = {
-      data: {
-        name: "Updated Character",
-        currentLocationId: 1,
+  describe("update", () => {
+    it("should update a character", async () => {
+      const params: {
+        data: UpdateCharacterInput;
+        where: Prisma.CharacterWhereUniqueInput;
+      } = {
+        data: {
+          name: "Updated Character",
+          currentLocationId: 1,
+          id: 1,
+          sensitivityToTheForce: "High",
+          species: "Human",
+        },
+        where: { id: 1 },
+      };
+
+      prismaService.planet.findUnique = jest.fn().mockResolvedValue({
         id: 1,
-        sensitivityToTheForce: "High",
-        species: "Human",
-      },
-      where: { id: 1 },
-    };
+      });
 
-    prismaService.planet.findUnique = jest.fn().mockResolvedValue({
-      id: 1,
-    });
+      prismaService.character.update = jest.fn().mockResolvedValue({
+        id: 1,
+        name: "Updated Character",
+      });
 
-    prismaService.character.update = jest.fn().mockResolvedValue({
-      id: 1,
-      name: "Updated Character",
-    });
+      prismaService.character.findUnique = jest.fn().mockResolvedValue({
+        id: 1,
+      });
 
-    prismaService.character.findUnique = jest.fn().mockResolvedValue({
-      id: 1,
-    });
-
-    expect(await service.update(params)).toEqual({
-      id: 1,
-      name: "Updated Character",
+      expect(await service.update(params)).toEqual({
+        id: 1,
+        name: "Updated Character",
+      });
     });
   });
 
-  it("should find all characters", async () => {
-    const characters = [
-      { id: 1, name: "Test 1" },
-      { id: 2, name: "Test 2" },
-    ];
+  describe("findAll", () => {
+    it("should find all characters", async () => {
+      const characters = [
+        { id: 1, name: "Test 1" },
+        { id: 2, name: "Test 2" },
+      ];
 
-    prismaService.character.findMany = jest.fn().mockResolvedValue(characters);
+      prismaService.character.findMany = jest
+        .fn()
+        .mockResolvedValue(characters);
 
-    expect(await service.findAll({})).toEqual(characters);
-  });
-
-  it("should find a character", async () => {
-    const params = { where: { id: 1 } };
-
-    prismaService.character.findUnique = jest.fn().mockResolvedValue({
-      id: 1,
-      name: "Test Character",
-    });
-
-    expect(await service.findOne(params)).toEqual({
-      id: 1,
-      name: "Test Character",
+      expect(await service.findAll({})).toEqual(characters);
     });
   });
 
-  it("should remove a character", async () => {
-    const params = { where: { id: 1 } };
+  describe("findOne", () => {
+    it("should find a character", async () => {
+      const params = { where: { id: 1 } };
 
-    prismaService.character.delete = jest.fn().mockResolvedValue({
-      id: params.where.id,
-      name: "Removed Test Character",
-    });
+      prismaService.character.findUnique = jest.fn().mockResolvedValue({
+        id: 1,
+        name: "Test Character",
+      });
 
-    expect(await service.remove(params)).toEqual({
-      id: params.where.id,
-      name: "Removed Test Character",
-    });
-  });
-
-  it("should relocate a character", async () => {
-    const params: {
-      planetId: number;
-      where: Prisma.CharacterWhereUniqueInput;
-    } = { where: { id: 1 }, planetId: 1 };
-
-    prismaService.character.update = jest.fn().mockResolvedValue({
-      id: params.where.id,
-    });
-
-    expect(await service.relocate(params)).toEqual({
-      id: params.where.id,
+      expect(await service.findOne(params)).toEqual({
+        id: 1,
+        name: "Test Character",
+      });
     });
   });
 
-  it("should embark a character to a starship", async () => {
-    const params: EmbarkCharacterInput = {
-      characterId: 1,
-      starshipId: 1,
-    };
+  describe("remove", () => {
+    it("should remove a character", async () => {
+      const params = { where: { id: 1 } };
 
-    prismaService.character.update = jest.fn().mockResolvedValue({
-      id: params.characterId,
-    });
+      prismaService.character.delete = jest.fn().mockResolvedValue({
+        id: params.where.id,
+        name: "Removed Test Character",
+      });
 
-    prismaService.starship.findUnique = jest.fn().mockResolvedValue({
-      cargoCapacity: 10,
-      name: "ship",
-    });
-
-    expect(await service.embark(params)).toEqual({
-      id: params.characterId,
+      expect(await service.remove(params)).toEqual({
+        id: params.where.id,
+        name: "Removed Test Character",
+      });
     });
   });
 
-  it("should disembark a character to a starship", async () => {
-    const params = {
-      characterId: 1,
-      starshipId: 1,
-    };
+  describe("relocate", () => {
+    it("should relocate a character", async () => {
+      const params: {
+        planetId: number;
+        where: Prisma.CharacterWhereUniqueInput;
+      } = { where: { id: 1 }, planetId: 1 };
 
-    prismaService.character.update = jest.fn().mockResolvedValue({
-      id: params.characterId,
+      prismaService.character.update = jest.fn().mockResolvedValue({
+        id: params.where.id,
+      });
+
+      expect(await service.relocate(params)).toEqual({
+        id: params.where.id,
+      });
     });
+  });
 
-    expect(await service.disembark(params)).toEqual({
-      id: params.characterId,
+  describe("embark", () => {
+    it("should embark a character to a starship", async () => {
+      const params: EmbarkCharacterInput = {
+        characterId: 1,
+        starshipId: 1,
+      };
+
+      prismaService.character.update = jest.fn().mockResolvedValue({
+        id: params.characterId,
+      });
+
+      prismaService.starship.findUnique = jest.fn().mockResolvedValue({
+        cargoCapacity: 10,
+        name: "ship",
+      });
+
+      expect(await service.embark(params)).toEqual({
+        id: params.characterId,
+      });
+    });
+  });
+
+  describe("disembark", () => {
+    it("should disembark a character to a starship", async () => {
+      const params = {
+        characterId: 1,
+        starshipId: 1,
+      };
+
+      prismaService.character.update = jest.fn().mockResolvedValue({
+        id: params.characterId,
+      });
+
+      expect(await service.disembark(params)).toEqual({
+        id: params.characterId,
+      });
     });
   });
 });

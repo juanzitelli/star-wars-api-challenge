@@ -70,6 +70,26 @@ export class CharactersResolver {
     @Args("updateCharacterInput")
     updateCharacterInput: UpdateCharacterInput,
   ) {
+    const character = await this.charactersService.findOne({
+      where: { id: updateCharacterInput.id },
+    });
+
+    if (!character) {
+      throw new NotFoundException(
+        `Couldn't find a character with the given parameters`,
+      );
+    }
+
+    const planet = await this.planetsService.findOne({
+      where: { id: updateCharacterInput.currentLocationId },
+    });
+
+    if (!planet) {
+      throw new BadRequestException(
+        `Couldn't find a planet with the given currentLocationId`,
+      );
+    }
+
     return await this.charactersService.update({
       data: updateCharacterInput,
       where: { id: updateCharacterInput.id },
@@ -182,7 +202,7 @@ export class CharactersResolver {
     }
 
     if (!character.starshipId) {
-      throw new NotFoundException(
+      throw new InternalServerErrorException(
         `Character hasn't been boarded onto a starship`,
       );
     }
