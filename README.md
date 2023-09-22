@@ -24,10 +24,10 @@ Secondly, I suggest you use `pnpm` as the package manager to interact with the p
 
 There's a .env.sample file located at `/.env.sample` that you can use as reference for creating your own `.env` file containing the three required values:
 
-```yaml
-- PORT=3000 # The port the application will use to run
-- DATABASE_URL="postgresql://postgres:abc123@localhost:5432/postgres?schema=public" # REQUIRED: This is the connection string Prisma will use to connect to the PostgreSQL database.
-- SWAPI_URL="https://swapi.dev/api" # External API required for spawning random enemies
+```text
+PORT=3000 # The port the application will use to run
+DATABASE_URL="postgresql://postgres:abc123@localhost:5432/postgres?schema=public" # REQUIRED: This is the connection string Prisma will use to connect to the PostgreSQL database.
+SWAPI_URL="https://swapi.dev/api" # External API required for spawning random enemies
 ```
 
 ### 2. PostgreSQL database
@@ -66,7 +66,7 @@ I suggest you run tests to make sure the project's working fine using the follow
 ```bash
 $ pnpm test
 # or to run them in watch mode
-$ pnpm test -- --watch 
+$ pnpm test -- --watch
 ```
 
 ### 7. Run the project
@@ -75,7 +75,7 @@ You can either run it in "production" or "dev" mode. Here are the commands for e
 
 ```bash
 # Production mode
-$ pnpm build && pnpm start 
+$ pnpm build && pnpm start
 
 # Dev mode
 $ pnpm dev
