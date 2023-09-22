@@ -94,12 +94,192 @@ I've provided with several queries for you to copy and paste into the playground
 > A checked item equals to a finished feature 📔
 
 - [x] Standard CRUD operations for Planet, Character, and Starship.
-  - [x] Characters
-  - [x] Planet
-  - [x] Starship
+
+Use the following queries/mutations to CRUD these three entities.
+
+```graphql
+  # Mutations
+  createCharacter(createCharacterInput: CreateCharacterInput!): Character!
+  createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
+  createStarship(createStarshipInput: CreateStarshipInput!): Starship!
+  removeCharacter(id: Int!): Character!
+  removePlanet(id: Int!): Planet!
+  removeStarship(id: Int!): Starship!
+  updateCharacter(updateCharacterInput: UpdateCharacterInput!): Character!
+  updatePlanet(updatePlanetInput: UpdatePlanetInput!): Planet!
+  updateStarship(updateStarshipInput: UpdateStarshipInput!): Starship!
+
+  # Queries
+  character(id: Int!): Character!
+  characters: [Character!]!
+  planet(id: Int!): Planet!
+  planets: [Planet!]!
+  starship(id: Int!): Starship!
+  starships: [Starship!]!
+```
+
 - [x] Functionality to relocate a character from one planet to another.
+
+Use the following mutation to relocate a character.
+
+```graphql
+  relocateCharacter(relocateCharacterInput: RelocateCharacterInput!): Character!
+```
+
 - [x] Boarding or disembarking a character from a starship.
+
+Use the following mutations to board/disembark a character.
+
+```graphql
+  disembarkCharacter(
+    disembarkCharacterInput: DisembarkCharacterInput!
+  ): Character!
+  embarkCharacter(embarkCharacterInput: EmbarkCharacterInput!): Character!
+```
+
 - [ ] Traveling capability for a starship from its current location to a destination planet.
+
+I didn't make it to developing this feature mostly because of time, but I'd picture it like the following: A Starship has a given set of terrains where it can land succesfully on and a Planet has a defined terrain. If the Starship contains the terrain the Planet has on it's surface then it can land.
+
 - [x] Calculate the distance of a starship from a specified planet using a GPS-like algorithm.
+
+Use the following mutation to calculate the distance of a starship from a specific planet.
+
+```graphql
+  calculateDistanceToStarship(
+    calculateDistanceToStarshipInput: CalculateDistanceToStarshipInput!
+  ): Distance!
+```
+
 - [ ] Recognize nearby enemy starships within a set range.
+
+Again, I didn't make it to this feature because of time but I'd take in a given distance in meters and use the current "distance calculation" feature and given a starshipId fetch the current starship then loop over all starships and check whether their "distance" is shorter than the distance in meters passed into the query.
+
 - [x] Spawn random enemy starships in the universe.
+
+Use the following mutation to spawn an enemy starship into the universe.
+
+```graphql
+  spawnRandomEnemy(spawnRandomEnemyInput: SpawnRandomEnemyInput!): Starship!
+```
+
+## Input/Types reference
+
+```graphql
+input CalculateDistanceToStarshipInput {
+  planetId: Int!
+  starshipId: Int!
+}
+
+type Character {
+  currentLocation: Planet
+  currentLocationId: Float!
+  enemies: [Character!]
+  id: Float!
+  name: String!
+  sensitivityToTheForce: String!
+  species: String!
+  starship: Starship
+  starshipId: Float
+}
+
+input CreateCharacterInput {
+  currentLocationId: Float!
+  name: String!
+  sensitivityToTheForce: String!
+  species: String!
+}
+
+input CreatePlanetInput {
+  climate: String!
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  population: Int!
+  terrain: String!
+}
+
+input CreateStarshipInput {
+  cargoCapacity: Int!
+  currentPlanetId: Int!
+  latitude: Float!
+  longitude: Float!
+  model: String!
+  name: String!
+}
+
+input DisembarkCharacterInput {
+  characterId: Int!
+}
+
+type Distance {
+  distanceInMeters: Float!
+}
+
+input EmbarkCharacterInput {
+  characterId: Int!
+  starshipId: Int!
+}
+
+type Planet {
+  characters: [Character!]
+  climate: String!
+  id: String!
+  latitude: Float!
+  longitude: Float!
+  name: String!
+  population: Int!
+  starships: [Starship!]
+  terrain: String!
+}
+
+input RelocateCharacterInput {
+  characterId: Int!
+  planetId: Int!
+}
+
+input SpawnRandomEnemyInput {
+  starshipId: Int!
+}
+
+type Starship {
+  cargoCapacity: Int!
+  currentPlanet: Planet
+  currentPlanetId: Int
+  enemies: [Starship!]
+  id: Int!
+  latitude: Float!
+  longitude: Float!
+  model: String!
+  name: String!
+  passengers: [Character!]
+}
+
+input UpdateCharacterInput {
+  currentLocationId: Float
+  id: Float!
+  name: String
+  sensitivityToTheForce: String
+  species: String
+}
+
+input UpdatePlanetInput {
+  climate: String
+  id: Int!
+  latitude: Float
+  longitude: Float
+  name: String
+  population: Int
+  terrain: String
+}
+
+input UpdateStarshipInput {
+  cargoCapacity: Int
+  currentPlanetId: Int
+  id: Int!
+  latitude: Float
+  longitude: Float
+  model: String
+  name: String
+}
+```
