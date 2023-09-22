@@ -6,7 +6,7 @@
 
 # Summary
 
-For the challenge that was proposed to me about making an API related to Star Wars, I used the proposed technologies such as TypeScript, Nest.js and TDD. To run the application you need two things: a PosgreSQL database running locally and then this Nest application. The steps to build the project are detailed below.
+For the challenge that was proposed to me about making an API related to Star Wars, I used the proposed technologies such as TypeScript, Nest.js and TDD. To run the application you need two things: a PostgreSQL database running locally and then this Nest application. The steps to build the project are detailed below.
 
 ## Setup
 
