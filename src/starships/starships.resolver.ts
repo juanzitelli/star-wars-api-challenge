@@ -76,6 +76,7 @@ export class StarshipsResolver {
     @Args("updateStarshipInput")
     { id, ...updateStarshipInput }: UpdateStarshipInput,
   ) {
+    // TODO: Prevent updating the cargo capacity to a value lower than the current amount of passengers
     const planet = await this.planetsService.findOne({
       where: {
         id: updateStarshipInput.currentPlanetId,

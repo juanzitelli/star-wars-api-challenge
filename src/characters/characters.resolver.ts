@@ -80,6 +80,12 @@ export class CharactersResolver {
       );
     }
 
+    if (!updateCharacterInput.currentLocationId) {
+      throw new BadRequestException(
+        `currentLocationId is missing in the query payload`,
+      );
+    }
+
     const planet = await this.planetsService.findOne({
       where: { id: updateCharacterInput.currentLocationId },
     });
